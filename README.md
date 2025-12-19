@@ -35,3 +35,8 @@ Rather than solving exactly, we penalize violation of Euler-Lagrange:
 Which can be simplified to:
 
   $$ \mathcal{L}_{phys} = \big<(x+\omega^2 x)^2 \big>$$
+
+## 🪏 Artifacts
+- `trajectory.png`: learned $x(t)$
+- `energy.png`: $H(t)$
+- `notes.md`: reflection notes
