@@ -34,4 +34,4 @@ Rather than solving exactly, we penalize violation of Euler-Lagrange:
 
 Which can be simplified to:
 
-  $$ \mathcal{L}_{phys} = (x+\omega^2 x)^2 $$
+  $$ \mathcal{L}_{phys} = \big<(x+\omega^2 x)^2 \big>$$
