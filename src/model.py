@@ -32,7 +32,7 @@ def set_global_seed(seed: int, deterministic: bool = False) -> None:
 
 
 # ------------------------------------------------------------------------------
-# 1️⃣ Model 
+# 1️⃣ Neural network model
 # ------------------------------------------------------------------------------
 class MLP(nn.Module):
     """

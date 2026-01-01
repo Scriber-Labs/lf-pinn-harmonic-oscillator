@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# ------------------------------------------------------------------
+# Project metadata
+# ------------------------------------------------------------------
+[project]
+name = "lf-pinn-harmonic-oscillator"
+version = "0.1.0"
+description = "Low-fidelity PINN for the simple harmonic oscillator"
+authors = [
+  { name = "YOUR NAME", email = "you@example.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = [
+  "torch>=2.0",
+  "numpy>=1.23",
+  "matplotlib>=3.6",
+  "jupyterlab>=4.0"
+]
+
+# ------------------------------------------------------------------
+# Optional extras
+# ------------------------------------------------------------------
+[project.optional-dependencies]
+dev = [
+  "black>=23.7",
+  "isort>=5.12",
+  "ruff>=0.1",
+  "pre-commit>=3.3"
+]
+test = [
+  "pytest>=7.4",
+  "pytest-cov>=4.1",
+  "mypy>=1.5"
+]
+
+# ------------------------------------------------------------------
+# Source-layout configuration
+# ------------------------------------------------------------------
+# Tell setuptools that *modules* (single .py files) live in `src/`.
+[tool.setuptools]
+package-dir = { "" = "src" }        # prepend `src/` to every importable
+
+# These are single-file modules, not packages.  List them explicitly.
+py-modules = ["model", "physics", "train", "utils"]
+
+# ------------------------------------------------------------------
+# Console-script entry points (optional)
+# Each file should define a `main()` function; adjust if names differ.
+# After installation you can run, for example, `$ pinn-train`.
+# ------------------------------------------------------------------
+[project.scripts]
+pinn-model   = "model:main"
+pinn-physics = "physics:main"
+#pinn-train   = "train:main"
+#pinn-utils   = "utils:main"
+
+# ------------------------------------------------------------------
+# Tooling (optional quality-of-life configs)
+# ------------------------------------------------------------------
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
