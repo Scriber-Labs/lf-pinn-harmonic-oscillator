@@ -32,7 +32,7 @@ def set_global_seed(seed: int, deterministic: bool = False) -> None:
 
 
 # ------------------------------------------------------------------------------
-# 1️⃣ Reproducibility helpers
+# 1️⃣ Model 
 # ------------------------------------------------------------------------------
 class MLP(nn.Module):
     """
