@@ -1,5 +1,5 @@
 # lf-pinn-harmonic-oscillator
-A minimal interpretable PINN-inspired simulator that demonstrates how physics enters learning via variational principles (without chasing accuracy).
+A minimal interpretable PINN-inspired simulator that demonstrates how physics enters learning via variational principles. Here, we simulate a harmonic oscillator of unknown frequency while softly enforcing the appropriate equation of motion and energy conservation. The goal is to produce interpretible results without chasing accuracy. 
 
 ## 🗂️ Repo structure
 ```
