@@ -56,8 +56,8 @@ py-modules = ["model", "physics", "train", "utils"]
 [project.scripts]
 pinn-model   = "model:main"
 pinn-physics = "physics:main"
-#pinn-train   = "train:main"
-#pinn-utils   = "utils:main"
+pinn-train   = "train:main"
+pinn-utils   = "utils:main"
 
 # ------------------------------------------------------------------
 # Tooling (optional quality-of-life configs)

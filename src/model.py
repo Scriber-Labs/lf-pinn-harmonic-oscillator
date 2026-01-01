@@ -7,29 +7,7 @@ import numpy as np
 import torch
 from torch import Tensor, nn
 
-# ------------------------------------------------------------------------------
-# 0️⃣ Reproducibility helpers
-# ------------------------------------------------------------------------------
-def set_global_seed(seed: int, deterministic: bool = False) -> None:
-    """
-    Seed RNGs in Python, NumPy and PyTorch.
-    
-    Parameters
-    ----------
-    seed : int
-        The random seed to set.
-    deterministic : bool, default = False
-        If True, enables deterministic algorithms in cuDNN (may hurt speed)
-    """
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    if torch.cuda.is_available():    # pragma: no cover (❓🙋‍♀️❓)
-        torch.cuda.manual_seed_all(seed)
-        
-    torch.backends.cudnn.determinisitic = deterministic
-    torch.backends.cudnn.benchmark = not deterministic 
-
+from utils import set_global_seed
 
 # ------------------------------------------------------------------------------
 # 1️⃣ Neural network model
