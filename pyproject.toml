@@ -74,3 +74,6 @@ line_length = 88
 python_version = "3.11"
 strict = true
 ignore_missing_imports = true
+
+[tool.distutils.egg_info]
+egg_base = "build"Copied!   
