@@ -5,7 +5,7 @@ __pycache__/
 
 # My files
 snapshot.txt
-lf_pinn_harmonic_oscillator.egg-info/
+*.egg-info/
 
 # C extensions
 *.so
