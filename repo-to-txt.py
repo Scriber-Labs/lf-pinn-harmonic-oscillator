@@ -22,9 +22,7 @@ OUTPUT_FILE = "snapshot.txt"
 MAX_FILE_SIZE = 200_000  # bytes
 TREE_DEPTH = 3
 
-INCLUDE_EXTS = {
-    ".md", ".py", ".txt", ".yml", ".yaml", ".json", ".toml"
-}
+INCLUDE_EXTS = {".md", ".py", ".txt", ".yml", ".yaml", ".json", ".toml"}
 
 EXCLUDE_DIRS = {
     ".git",
@@ -53,6 +51,7 @@ NOTEBOOK_SUMMARIES = {
 # =====================
 # Helpers
 # =====================
+
 
 def is_excluded(path: Path) -> bool:
     return any(part in EXCLUDE_DIRS for part in path.parts)
@@ -93,6 +92,7 @@ def write_section(out, title: str):
 # Main
 # =====================
 
+
 def main():
     repo = Path(".").resolve()
 
@@ -119,8 +119,7 @@ def main():
             # Notebook handling
             if file.suffix == ".ipynb":
                 summary = NOTEBOOK_SUMMARIES.get(
-                    str(rel),
-                    "Jupyter notebook (content omitted; JSON format)."
+                    str(rel), "Jupyter notebook (content omitted; JSON format)."
                 )
                 out.write(f"\n\n=== {rel} (summary) ===\n\n{summary}\n")
                 continue
