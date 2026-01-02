@@ -87,4 +87,3 @@ Which can be simplified to:
 
 ## Final Thought
 > *"The harmonic oscillatork is to physiucs what linear regression is to machine learning."*
-

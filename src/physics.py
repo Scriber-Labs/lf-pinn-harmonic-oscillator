@@ -115,10 +115,10 @@ def _grad(y: Tensor, x: Tensor) -> Tensor:
 # ------------------------------------------------------------------------------
 # 4️⃣ Example usage/ test case (run `python -m physics` from project root)
 # ------------------------------------------------------------------------------
-if __name__ == "__main__=":
+if __name__ == "__main__":
     from model import MLP, set_global_seed 
     
-    torch.maniual_seed(0)
+    torch.manual_seed(0)
     
     device: Final = torch.device("cpu")
     net = MLP(hidden=64, device=device)

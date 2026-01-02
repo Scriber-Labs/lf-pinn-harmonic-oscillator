@@ -72,12 +72,12 @@ def train(
     list[float]
         Loss history (one entry per epoch).
     """
-    optimizer = optim.Optimizer = optim.Adam(model.parameters(), lr=lr)
+    optimizer: optim.Optimizer = optim.Adam(model.parameters(), lr=lr)
     loss_history: list[float] = []
     
     for epoch in range(1, epochs + 1):
         optimizer.zero_grad()
-        loss = Tensor = ho_variational_loss(model, collocation, omega=omega)
+        loss: Tensor = ho_variational_loss(model, collocation, omega=omega)
         loss.backward()
         optimizer.step()
         
@@ -93,7 +93,7 @@ def train(
 # ------------------------------------------------------------------------------
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        prog="python -m trian",
+        prog="python -m train",
         description="Train a low-fidelity PINN for the simple harmonic oscillator.",
     )
     parser.add_argument("--hidden", type=int, default=64, help="number of hidden units per layer")
