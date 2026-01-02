@@ -1,22 +1,29 @@
-from pathlib import Path
-from typing import Iterable
+#!/usr/bin/env python3
+"""
+repo-to-txt.py
 
-# =============================================================================
+Create a clean, LLM-friendly text snapshot of a repository:
+- Directory tree (depth-limited)
+- Source file contents
+- Optional repo intent
+- Notebook summaries instead of raw JSON
+
+Run from repo root:
+    python repo-to-txt.py
+"""
+
+from pathlib import Path
+
+# =====================
 # Configuration
-# =============================================================================
+# =====================
 
 OUTPUT_FILE = "snapshot.txt"
-
 MAX_FILE_SIZE = 200_000  # bytes
+TREE_DEPTH = 3
 
 INCLUDE_EXTS = {
-    ".md",
-    ".py",
-    ".txt",
-    ".yml",
-    ".yaml",
-    ".json",
-    ".toml",
+    ".md", ".py", ".txt", ".yml", ".yaml", ".json", ".toml"
 }
 
 EXCLUDE_DIRS = {
@@ -26,42 +33,50 @@ EXCLUDE_DIRS = {
     "node_modules",
     ".ipynb_checkpoints",
     ".egg-info",
+    "build",
+    "dist",
 }
 
-# Optional: notebook summaries you want injected
+# Explicitly exclude generated snapshots / prompts
+EXCLUDE_FILES = {
+    "snapshot.txt",
+    "prompt.txt",
+    "repo_snapshot.txt",
+}
+
+REPO_INTENT_FILE = "REPO_INTENT.txt"
+
 NOTEBOOK_SUMMARIES = {
-    "notebooks/demo.ipynb": (
-        "Notebook demonstrating training of the low-fidelity PINN, "
-        "with visualizations of learned trajectory x(t) and energy conservation."
-    )
+    # "notebooks/demo.ipynb": "Notebook demonstrating training loop and visualization."
 }
 
-REPO_INTENT = """\
-This repository explores low-fidelity physics-informed neural networks (PINNs)
-for the 1-D harmonic oscillator, emphasizing interpretability and physical
-structure over numerical accuracy.
-"""
-
-
-# =============================================================================
+# =====================
 # Helpers
-# =============================================================================
+# =====================
+
+def is_excluded(path: Path) -> bool:
+    return any(part in EXCLUDE_DIRS for part in path.parts)
+
 
 def is_text_file(path: Path) -> bool:
     return (
-        path.suffix in INCLUDE_EXTS
+        path.is_file()
+        and path.suffix in INCLUDE_EXTS
         and path.stat().st_size < MAX_FILE_SIZE
     )
 
 
-def should_exclude(path: Path) -> bool:
-    return any(part in EXCLUDE_DIRS for part in path.parts)
+def load_repo_intent() -> str:
+    path = Path(REPO_INTENT_FILE)
+    if path.exists():
+        return path.read_text(encoding="utf-8").strip()
+    return ""
 
 
-def print_tree(root: Path, depth: int = 3) -> str:
-    lines: list[str] = []
+def print_tree(root: Path, depth: int) -> str:
+    lines = []
     for path in sorted(root.rglob("*")):
-        if should_exclude(path):
+        if is_excluded(path):
             continue
         rel = path.relative_to(root)
         if len(rel.parts) <= depth:
@@ -70,70 +85,55 @@ def print_tree(root: Path, depth: int = 3) -> str:
     return "\n".join(lines)
 
 
-def write_section(out, title: str) -> None:
-    out.write(f"\n## {title}\n\n")
+def write_section(out, title: str):
+    out.write(f"## {title}\n\n")
 
 
-# =============================================================================
+# =====================
 # Main
-# =============================================================================
+# =====================
 
-def main() -> None:
+def main():
     repo = Path(".").resolve()
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as out:
-        # ---------------------------------------------------------------------
-        # Header
-        # ---------------------------------------------------------------------
         out.write("# Repository Snapshot\n\n")
 
         write_section(out, "Repo Intent (author-provided)")
-        out.write(REPO_INTENT.strip() + "\n\n")
+        intent = load_repo_intent()
+        out.write((intent if intent else "[No repo intent provided]") + "\n\n")
 
-        # ---------------------------------------------------------------------
-        # Directory tree
-        # ---------------------------------------------------------------------
         write_section(out, "Directory Tree")
-        out.write(print_tree(repo))
-        out.write("\n")
+        out.write(print_tree(repo, TREE_DEPTH) + "\n\n")
 
-        # ---------------------------------------------------------------------
-        # Files
-        # ---------------------------------------------------------------------
         write_section(out, "Files")
 
         for file in sorted(repo.rglob("*")):
-            if should_exclude(file):
+            if is_excluded(file):
+                continue
+            if file.name in EXCLUDE_FILES:
                 continue
 
-            if not file.is_file():
-                continue
+            rel = file.relative_to(repo)
 
-            # Skip the output snapshot itself
-            if file.name == OUTPUT_FILE:
-                continue
-
-            rel_path = file.relative_to(repo)
-
-            # Notebook handling (summary instead of JSON spam)
+            # Notebook handling
             if file.suffix == ".ipynb":
                 summary = NOTEBOOK_SUMMARIES.get(
-                    str(rel_path),
-                    "Jupyter notebook (summary not provided)."
+                    str(rel),
+                    "Jupyter notebook (content omitted; JSON format)."
                 )
-                out.write(f"\n=== {rel_path} (summary) ===\n\n")
-                out.write(summary + "\n")
+                out.write(f"\n\n=== {rel} (summary) ===\n\n{summary}\n")
                 continue
 
-            # Regular text files
+            # Text files
             if is_text_file(file):
-                out.write(f"\n=== {rel_path} ===\n\n")
+                out.write(f"\n\n=== {rel} ===\n\n")
                 try:
                     out.write(file.read_text(encoding="utf-8"))
                 except UnicodeDecodeError:
-                    out.write("[Skipped: encoding error]\n")
+                    out.write("[Skipped: encoding error]")
 
-    print(f"Saved repository snapshot to {OUTPUT_FILE}")
+    print(f"Saved snapshot to {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":

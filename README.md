@@ -1,5 +1,5 @@
 # lf-pinn-harmonic-oscillator
-A minimal interpretable PINN-inspired simulator that demonstrates how physics enters learning via variational principles. Here, we simulate a harmonic oscillator of unknown frequency while softly enforcing the appropriate equation of motion and energy conservation. The goal is to produce interpretible results without chasing accuracy. 
+A minimal interpretable PINN-inspired simulator that demonstrates how physics enters learning via variational principles. Here, we simulate a harmonic oscillator of unknown frequency while softly enforcing the appropriate equation of motion and energy conservation. The goal is to produce interpretible results without chasing accuracy while creating a foundational teaching module in physics-informed machine learning (PML). Note that particular emphasis on variational structure and parsimony over performance as core philosophies in building PIML frameworks. 
 
 ## 🗂️ Repo structure
 ```
@@ -40,3 +40,51 @@ Which can be simplified to:
 - `trajectory.png`: learned $x(t)$
 - `energy.png`: $H(t)$
 - `notes.md`: reflection notes
+
+## 5 Machine Learning Stages (Brunton-prescription) 
+1. Problem formulation ✅
+    > **Problem:** Can a neural function approximator recover physically meaningful motion via minimization of a variational resiudal, as opposed to fitting data?
+2. Data collection and curation 
+    - ❎ This repo is intentionally minimal and does not use any observational data to train the model.
+    - Instead of observational input data, we use collocation points in time (gives synthetic, structure-driven input "data").
+        - In this setup, the synthetic data we create is used to 'bake' our governing equation of interest (1D SHO) into the machine learning framework.
+        - Note that the input "data" will be evaluated on a low-dimensional domain. 
+
+    > **TL;DR:** This stage is deliberatily left degenerate. Instead of observational trajectoeries/data, the training data consists solely of simulated collocation points.
+    
+3. Neural architecture
+    - ⚠️ implemented, but still need personally to bridge the conceptual justications. 
+        - For now, we'll just say the current archtecture was inspired by Steve Brunton-style approaches to ML architecture design. 
+    - Importantly, this model is not trying to learn physics from architectures. Rather, it is promoting physics via the loss funciton.
+    - Overview of architecture choices:
+        - Low-depth MLP
+        - Scalar input $\rightarrow$ scalar output
+        - Smooth activations (`tanh`)
+        - No convolutions
+        - No recurrence
+        - No unneccessary/unjuistified inductive bias
+
+4. Loss function ✅
+    - The loss function $$\mathcal{L}_{phys} = \Big< (\ddot{x} + \omega^2x)^2\Big>$$ encodes:
+        - Euler-Lagrange structure
+        - Second-order dynamics
+        - physical consistency
+    - Rule of thumbe (Steve Brunton-inspired): 
+        > Loss functions should refelct governing equations, not arbitrary error metrics.
+
+5. Constrain optimization
+    - ❎⚠️ like the neural architecture step, I'm still learning a lot of coneptual basics, and like the data curation step, this is intentionally left minimalistic and uses 'go-to' optimization routine:
+        - Adam
+        - Fixed learning rate
+        - No scheduler (❓)
+
+   - Additionally, we are using the *optimization should be revealing structure* (Steve-Brunton inspired) guideline as justification for blindly following 'standard' routines for our low-fidelity SHO PINN. Future repos will aim to craft unique implementations of this and other 'incomplete' steps. (Stay tuned!)
+
+## Next Steps
+- Create modesl that...
+    - learns $\omega$ and treats it as a trainable parameter
+    - or condition's the network on $\omega$ (❓)
+
+## Final Thought
+> *"The harmonic oscillatork is to physiucs what linear regression is to machine learning."*
+
