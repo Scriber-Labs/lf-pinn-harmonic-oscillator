@@ -119,3 +119,6 @@ Refer to `artifacts/notes.md` for:
 
 
 > *"The harmonic oscillator is to physiucs what linear regression is to machine learning."*
+
+## Author
+Lauren Shriver | Scriber Labs © 2025-2026
