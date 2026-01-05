@@ -1,5 +1,7 @@
 # lf-pinn-harmonic-oscillator
-A minimal interpretable PINN-inspired simulator that demonstrates how physics enters learning via variational principles. Here, we simulate a harmonic oscillator of unknown frequency while softly enforcing the appropriate equation of motion and energy conservation. The goal is to produce interpretible results without chasing accuracy while creating a foundational teaching module in physics-informed machine learning (PML). Note that particular emphasis on variational structure and parsimony over performance as core philosophies in building PIML frameworks. 
+A **low-fidelity physics-informed neural network (PINN)** demonstrating how physics can guide learning via variational pricniples. 
+This repository simluates a **1D simple harmonic oscillator (SHO)** with an unknown frequency while softly enforcing the equation of motion and energy conservation.
+The purpose of this repo is to serve as a foundational teaching phodule in physics-informed machine learning (PIML), emphasizing **interpretability** and **parsimony** oveer accuracy or performance.
 
 ## 🗂️ Repo structure
 ```
