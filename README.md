@@ -11,6 +11,7 @@ The purpose of this repo is to serve as a foundational teaching phodule in physi
 lf-pinn-harmonic-oscillator/
 ├── README.md
 ├── requirements.txt
+├── pyproject.toml
 ├── src/
 │   ├── model.py          # neural network ansatz
 │   ├── physics.py        # SHO + variational loss
@@ -20,8 +21,10 @@ lf-pinn-harmonic-oscillator/
 │   └── demo.ipynb        # visual + narrative
 └── artifacts/
     ├── training.png      # training curve
-    ├── trajectory.png    # model output
+    ├── trajectory.png    # model output 
     ├── energy.png        # Hamiltonian evolution
+    ├── phase_space.png   # phase space with learned Hamiltonian flow
+    ├── figures.md         # figure analysis
     └── notes.md          # conceptual notes and reflections
 ```
 
