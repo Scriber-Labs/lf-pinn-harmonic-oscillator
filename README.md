@@ -54,10 +54,8 @@ Which can be simplified to:
 > This encourages the network to respect physical dynamics. Note that the physical dynamics we want the model to respect are not directly enforced - hence "low-fidelity".
 
 ## 🪏 Artifacts
-- `trajectory.png`: learned $x(t)$
-- `energy.png`: $H(t)$
+- `figures.md': analysis of figures in `notebooks/demo.ipynb
 - `notes.md`: conceptual reflections, including symplectic forms and Clifford algebra insights
-
 ---
 
 ## 5 Machine Learning Stages (Brunton-inspired) 
