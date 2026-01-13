@@ -2,19 +2,27 @@
 
 ## Figure 1 - Training Curve
 ![Training Curve](training.png)
-Figure summary here.
-
+Two regions:
+1. Fast early descent.
+    - Reflects the networks ability to quickly learn qualitative features rather than exact parameterization.
+    - Manifests due to a loss function dominated by global consistency constraints (ODE residuals, conservation structure). 
+       - [ ] Need to understand this better.
+2. Oscillatory spikes.
+    - Demonstrates geometric reorganization whenever the network (briefly) violates symplectic consistency.
+    - Arises due to competition between trajectory accuracy and structural consistency.
 ---
 
 ## Figure 2 - Trajectories (Predicted and Ground Truth)
 ![Trajectories](trajectory.png)
-Figure summary here.
+- [ ] Make sure you got the lengend correct.
 
 ---
 ## Figure 3 - Hamiltonian Evolution
 ![Hamiltonian Evolution](energy.png)
-Figure summary here
-
+Three regions:
+1. Sharp initial drop.
+2. Small 'bump'.
+3. Near-constant flat line.
 ---
 ## Figure 4 - Phase Space Trajectory Plotted over Hamiltonian Flow Fields 
 ![Phase Space Trajectory](phase_space.png)
@@ -30,4 +38,4 @@ Figure summary here
   - The trajectory visually encodes:
     - Bivector-generated rotation
     - Sympletctic intuition
-    - Hamiltonian flow wihtout formal machiner✔️
+    - Hamiltonian flow without formal machiner✔️
