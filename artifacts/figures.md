@@ -40,4 +40,3 @@ Three regions:
 
 **PINN-Trajectory** $\rightarrow$ learned dynamics.
 - **Variable Convention:** In dynamical systems and PINNs, the predicted state is typically denoted as $\mathbf{z}_\theta(t) = [q_\theta(t), p_\theta(t)]^T$. Using $\mathbf{z}_\theta$ (bold for vector) is considered best practice.
-- What the PINN does *not* do:
