@@ -12,11 +12,12 @@ Spikes reflect transient conflicts between trajectory fitting and antisymmetric
 structure in the learned generator.
 ---
 
-## Figure 2 - Trajectories (Predicted and Ground Truth)
+## Figure 2 - Position Trajectories
 ![Trajectories](trajectory.png)
-- [ ] Make sure you got the lengend correct.
-- [ ] Is this the $q(t)$ 'component' of a trajectory on phase space?
-- [ ] Is there any value gained in plotting the $p(t)$ component?
+> Position component of the predicted trajectory $q_\theta(t)$ (green curve)
+> and the ground truth trajectory $q(t)$ (blue dashed curve). 
+
+Note that we use canonical coordinates $q(t)=x(t)$ and $p(t)=\dot{x}$, corresponding to position and momentum of a one-dimensional harmonic oscillator. 
 
 ---
 ## Figure 3 - Hamiltonian Evolution
@@ -24,30 +25,19 @@ structure in the learned generator.
 > The learned generator $G_\theta$ gives a vector field increasingly tangent to its own contours. From this emerges conservation enforced by antisymmetry rather than numeric accuracy.
 > 
 Three regions:
-1. Sharp initial drop.
-2. Small 'bump'.
-3. Near-constant flat line.
+1. Sharp initial drop: Model discovers approximate invariant.
+2. Small 'bump': Rebalancing between trajectory and structure losses.
+3. Approximately flat region: Near-stationary energy error.
 ---
-## Figure 4 - Phase Space Trajectory Plotted over Hamiltonian Flow Fields 
-![Phase Space Trajectory](phase_space.png) ![Vector Field](phase_space_quiver.png)
-> The PINN learns a single phase-space trajectory (green) consistent with the Hamiltonian equations of motion. The analytic flow field (blue streamlines) and contant-energy orbit (blue dotted)are shown for reference and are not learned by the model.
- 
+## Figure 4 - Phase Space Trajectory: Flow vs. Vectors
+| Hamiltonian Streamlines | Hamiltonian Vector Field |
+|:---:|:---:|
+| ![Phase Space Trajectory](phase_space.png) | ![Vector Field](phase_space_quiver.png) |
+
+> **Left:** The analytic flow (blue streamlines) shows the global topology of the conservation law. **Right:** The vector field (quiver plot) shows the local direction and magnitude of the Hamiltonian gradient.
+
 **Analytic flow fields** $$\dot{x}=p, \quad \dot{p}=-\omega^2 x $$
 
-**Constant-energy orbit** $$H(x,p)=\text{const}$$
-
 **PINN-Trajectory** $\rightarrow$ learned dynamics.
+- **Variable Convention:** In dynamical systems and PINNs, the predicted state is typically denoted as $\mathbf{z}_\theta(t) = [q_\theta(t), p_\theta(t)]^T$. Using $\mathbf{z}_\theta$ (bold for vector) is considered best practice.
 - What the PINN does *not* do:
-  - Spiral outward $\rightarrow$ no energy source.
-  - Spiral inward $\rightarrow$ no energy sink/dissapation.
-- What the PINN does do:
-  - Approaches a closed orbit.
-  - Initially, it crosses streamlines (❓🤔seems to be nearly perpendicular to stream at each crossing).
-    - Corresponds to the generator adjusting its alignment with respect to the streamlines.
-  - It eventually approaches a closed orbit and remains approximately tangent to streamlines.
-
-- [ ] Do my best to understand this:
-  - The trajectory visually encodes:
-    - Bivector-generated rotation
-    - Sympletctic intuition
-    - Hamiltonian flow without formal machinery✔️
