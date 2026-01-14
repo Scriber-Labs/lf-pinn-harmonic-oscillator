@@ -2,19 +2,14 @@
 
 ## Figure 1 - Training Curve
 ![Training Curve](training.png)
-> Rapid initial descent followed by periodic spikes. The early descent reflects the network's ability to quickly
-> learn qualitative features rather than exact parameterization. This is followed with alternating regions
-> of rapid decent and constraint violations. The spikes arise due to competition between trajectory accuracy
-> and structural consistency, consistent with optimization under competing goals.
+> Training curve exhibits rapid initial descent followed by periodic spikes. 
 
-Two regions:
-1. Fast early descent.
-    - Reflects the networks ability to quickly learn qualitative features rather than exact parameterization.
-    - Manifests due to a loss function dominated by global consistency constraints (ODE residuals, conservation structure). 
-       - [ ] Need to understand this better.
-2. Oscillatory spikes.
-    - Demonstrates geometric reorganization whenever the network (briefly) violates symplectic consistency.
-    - Arises due to competition between trajectory accuracy and structural consistency.
+The early descent reflects the network's ability to quickly
+learn qualitative features rather than exact parameterization. This is followed with alternating regions
+of rapid decent and constraint violations. 
+
+Spikes reflect transient conflicts between trajectory fitting and antisymmetric
+structure in the learned generator.
 ---
 
 ## Figure 2 - Trajectories (Predicted and Ground Truth)
