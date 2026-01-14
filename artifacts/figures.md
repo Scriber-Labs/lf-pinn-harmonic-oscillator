@@ -9,15 +9,15 @@ learn qualitative features rather than exact parameterization. This is followed 
 of rapid decent and constraint violations. 
 
 Spikes reflect transient conflicts between trajectory fitting and antisymmetric
-structure in the learned generator.
+structure in the learned generator. This corresponds with the network "re-learning" the Interestingly, the peak height of the spikes is approximately constant.
 ---
 
 ## Figure 2 - Position Trajectories
 ![Trajectories](trajectory.png)
 > Position component of the predicted trajectory $q_\theta(t)$ (green curve)
-> and the ground truth trajectory $q(t)$ (blue dashed curve). 
+> and the ground truth trajectory $q(t)$ (red dashed curve). 
 
-Note that we use canonical coordinates $q(t)=x(t)$ and $p(t)=\dot{x}$, corresponding to position and momentum of a one-dimensional harmonic oscillator with unit mass.. 
+Note that we use canonical coordinates $q(t)=x(t)$ and $p(t)=\dot{x}$, corresponding to the phase space of a one-dimensional harmonic oscillator. Parameters are normalized so that the mass and spring constant are implicitly absorbed into the natural frequency $\omega$. 
 
 ---
 ## Figure 3 - Hamiltonian Evolution

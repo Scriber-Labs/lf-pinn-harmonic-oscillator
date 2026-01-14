@@ -1,7 +1,7 @@
 # lf-pinn-harmonic-oscillator
 A **low-fidelity physics-informed neural network (PINN)** demonstrating how physics can guide learning via variational pricniples. 
-This repository simluates a **1D simple harmonic oscillator (SHO)** with an unknown frequency while softly enforcing the equation of motion and energy conservation.
-The purpose of this repo is to serve as a foundational teaching phodule in physics-informed machine learning (PIML), emphasizing **interpretability** and **parsimony** oveer accuracy or performance.
+This repository simulates a **1D simple harmonic oscillator (SHO)** with an unknown frequency while softly enforcing the equation of motion and energy conservation.
+The purpose of this repo is to serve as a foundational teaching module in physics-informed machine learning (PIML), emphasizing **interpretability** and **parsimony** oveer accuracy or performance.
 
 ---
 
@@ -20,12 +20,13 @@ lf-pinn-harmonic-oscillator/
 ├── notebooks/
 │   └── demo.ipynb        # visual + narrative
 └── artifacts/
-    ├── training.png      # training curve
-    ├── trajectory.png    # model output 
-    ├── energy.png        # Hamiltonian evolution
-    ├── phase_space.png   # phase space with learned Hamiltonian flow
-    ├── figures.md         # figure analysis
-    └── notes.md          # conceptual notes and reflections
+    ├── training.png                # training curve
+    ├── trajectory.png              # model output 
+    ├── energy.png                  # Hamiltonian evolution
+    ├── phase_space.png             # phase space with learned Hamiltonian flow
+    ├── phase_space_quiver.png      # phase space with learned Hamiltonian vector field
+    ├── figures.md                  # figure analysis
+    └── notes.md                    # conceptual notes and reflections
 ```
 
 ---
@@ -52,10 +53,6 @@ Which can be simplified to:
   $$ \mathcal{L}_{phys} = \big<(\ddot{x} + \omega^2 x)^2 \big> $$
 
 > This encourages the network to respect physical dynamics. Note that the physical dynamics we want the model to respect are not directly enforced - hence "low-fidelity".
-
-## 🪏 Artifacts
-- `figures.md': analysis of figures in `notebooks/demo.ipynb
-- `notes.md`: conceptual reflections, including symplectic forms and Clifford algebra insights
 ---
 
 ## 5 Machine Learning Stages (Brunton-inspired) 
@@ -88,7 +85,7 @@ Which can be simplified to:
 
 ```bash
 # Install dependencies
-pip install -r requirements.txt
+pip install -e .
 
 # Train a model with default settings
 python -m train
@@ -106,8 +103,26 @@ python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 
 
 ## Next Steps
 - Train models with learnable frequency $\omega$.
-- Condition the network explicitly on $\omega$.l
-- Explore richer low-fidelity physics constraints and Hamiltonian structure preservation.
+- Condition the network explicitly on $\omega$.
+- Explore richer low-fidelity physics constraints and Hamiltonian structure preservation (e.g., energy conservation loss term).
+- Explore ways to introduce inductive biases (limiations)
+---
+
+## ⚠️ Limitations
+- **Temporal Resolution:** The model's accuracy is strictly dependent on the density of the collocation points ($n_\text{points}$).
+    - If $\omega$ increases or the time window is increased, undersampling can lead to aliasing thus preventing the network successfully capturing the underlying oscillation.
+- **Extrapolation (00D):** As a global function approximator, the MLP acts as an interpolator. 
+  - Consequently, performance degrades rapidly outside the training window $[0, 2\pi]$ unless periodic inductive biases are introduced.
+- **Soft Constraints:** Physics is enforced via a penalty term in the lose function ("soft constratin").
+   - Unlike symplectic integrators, this model does not strictly conserve the Hamiltonian, **⚠️⚠️Need to visualize this -> increase scale on energy plot⚠️⚠️**) 
+- **Spectral Bias:** Neural networks naturally learn lower-frequency components first. High-frequency oscillators may require specialized architectures or adoptive sampling (❓What is adoptive sampling?).
+
+---
+
+## 📚 Citations
+- **PINNs Foundational Paper:** Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. *Journal of Computational Physics*, 378, 686-707.
+- **Data-Driven Modeling:** Brunton, S. L., & Kutz, J. N. (2022). *Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control*. Cambridge University Press.
+- **Variational Mechanics:** Goldstein, H., Poole, C., & Safko, J. (2001). *Classical Mechanics*. Pearson.
 
 ---
 
@@ -119,7 +134,8 @@ Refer to `artifacts/notes.md` for:
 - Interpretation of low-fidelity PINNs: penalizing deviations from physical constraints, not exact enforcement
 
 
-> *"The harmonic oscillator is to physiucs what linear regression is to machine learning."*
+
+> *"The harmonic oscillator is to physics what linear regression is to machine learning."*
 
 ## Author
 Lauren Shriver | Scriber Labs © 2025-2026
