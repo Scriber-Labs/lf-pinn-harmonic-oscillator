@@ -32,27 +32,30 @@ lf-pinn-harmonic-oscillator/
 ```
 
 ```mermaid
-    flowchart TD
-        %% Core blocks
-        A[Problem Formulation Define SHO dynamics & Lagrangian] --> B[Collocation Point Generation Random t ∈ [0, Tₘₐₓ]]
-        B --> C[Neural Ansatz MLP(t; θ) → x̂(t)]
-        C --> D[Automatic Differentiation Compute dx̂/dt and d²x̂/dt²]
-        D --> E[Variational Physics Loss (ddx̂ + ω²·x̂)²]
-        E --> F[Total Loss (optional data term + physics loss)]
-        F --> G[Optimizer (Adam) θ ← θ − η∇θ Loss]
-        G --> H[Training Loop Iterate over epochs]
-        H --> I[Model Evaluation Check loss trajectory, phase‑space plots, energy conservation]
-
-        %% Optional extensions
-        subgraph Optional["Optional Extensions"]
-            J[Learnable ω] --> E
-            K[Dynamic Resampling of Collocation Points] --> B
-            L[Add Data Anchors] --> F
-        end
-
-        %% Styling
-        classDef block fill:#f0f8ff,stroke:#333,stroke-width:1px;
-        class A,B,C,D,E,F,G,H,I,J,K,L block;
+---
+config:
+  theme: neo-dark
+  look: neo
+---
+flowchart TD
+	%% Core blocks
+	A["Setting the Stage: Define SHO dynamics & Lagrangian"] --> B["Collocation Point Generation:<br>$$\ t\in [0, 2\pi]$$"]
+	B --> C["Neural Ansatz: $$ \ \text{MLP}(t, \theta) \rightarrow q_\theta(t) $$"]
+	C --> D["Automatic Differentiation: Compute $$ \ p_\theta(t) = \frac{d}{dt}q_\theta \text{ and } f_\theta=\frac{d}{dt}p_\theta=\frac{d^2}{dt^2}q_\theta$$"]
+	D --> E["Variational Physics Loss $$ \ \mathcal{L}_{phys} = \langle(\ddot{q} + \omega^2 q)^2\rangle  $$"]
+	E --> F["Total Loss: $$ \ \mathcal{L}_{tot} = \mathcal{L}_{phys} + \mathcal{L}_{data}  \ $$ (data term is optional)"]
+	F --> G["Optimizer (Adam): $$ \ \theta \leftarrow \theta - \eta \nabla \theta_{loss} $$"]
+	G -- "Training Loop Iterates over epochs" --> C
+	G --> H["Sanity Check with Plots: training curve, position trajectories, phase-space plots, $$ \ H_\theta(t) = H(q_\theta, p_\theta)$$"]
+	
+	
+	A@{ shape: rounded }
+	B@{ shape: rounded }
+	C@{ shape: rounded }
+	D@{ shape: rounded }
+	E@{ shape: rounded }
+	F@{ shape: rounded }
+	G@{ shape: rounded }
 ```
 
 ---
@@ -60,23 +63,25 @@ lf-pinn-harmonic-oscillator/
 ## 🔰 Implementation Overview
 ### Physical system: Simple Harmonic oscillator (SHO)
 
-We model a 1-D SHO using the Lagrangian,
+We model a non-dimensionalized 1-D SHO using the Lagrangian,
 
-  $$ L(x,\dot{x}) = \frac{1}{2}\dot{x}^2 - \frac{1}{2}\omega^2 x^2 .$$
+  $$ L(q,\dot{q}) = \frac{1}{2}\dot{q}^2 - \frac{1}{2}\omega^2 q^2 $$
+
+where $q(t)$ denotes the trajectory of the oscillator's position about an equilibrium point. 
   
 ### Neural ansatz
 
-  $$ x_\theta(t) = \text{MLP}(t) $$
+  $$ q_\theta(t) = \text{MLP}(t, \theta) $$
 
-### Variational loss (low fidelity) 
+### Variational loss (soft constraint $\Rightarrow$ low fidelity) 
 
 Rather than solving exactly, the **Euler-Lagrange residual** is penalized at collation points in time.
 
-  $$ \mathcal{L}_{phys} = \bigg< \bigg( \frac{d}{dt}\frac{\partial L}{\partial \dot{x}} - \frac{\partial L}{\partial x} \bigg)^2 \bigg> $$
+  $$ \mathcal{L}_{phys} = \bigg< \bigg( \frac{d}{dt}\frac{\partial L}{\partial \dot{q}} - \frac{\partial L}{\partial q} \bigg)^2 \bigg> $$
 
 Which can be simplified to:
 
-  $$ \mathcal{L}_{phys} = \big<(\ddot{x} + \omega^2 x)^2 \big> $$
+  $$ \mathcal{L}_{phys} = \big<(\ddot{q} + \omega^2 q)^2 \big> $$
 
 > This encourages the network to respect physical dynamics. Note that the physical dynamics we want the model to respect are not directly enforced - hence "low-fidelity".
 ---
@@ -95,7 +100,7 @@ Which can be simplified to:
     - Physics enters through the **loss function**, not the architecture.
 
 6. **Loss function ✅**
-    $$\mathcal{L}_{phys} = \Big< (\ddot{x} + \omega^2x)^2\Big>$$
+    $$\mathcal{L}_{phys} = \Big< (\ddot{q} + \omega^2q)^2\Big>$$
     - Encodes Euler-Lagrange structure, second-order dynamics, and physical consistency.
 
 
@@ -124,14 +129,18 @@ Optional CLI flags:
 ```bash
 python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 --device cpu
 ```
+---
+
+## 🏡 Take Home Messages
+<img src="artifacts/action_area.png" alt="Action as the area inside the energy contour." width="400" height="400">
 
 ---
 
 ## Next Steps
 - Train models with learnable frequency $\omega$.
 - Condition the network explicitly on $\omega$.
-- Explore richer low fidelity physics constraints and Hamiltonian structure preservation (e.g., energy conservation loss term).
-- Explore ways to introduce inductive biases (limitations)
+- Explore richer low-fidelity physics constraints and Hamiltonian structure preservation (e.g., energy conservation loss term).
+- Explore ways to introduce inductive biases (limitations).
 ---
 
 ## ⚠️ Limitations
