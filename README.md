@@ -22,6 +22,7 @@ lf-pinn-harmonic-oscillator/
 ├── notebooks/
 │   └── demo.ipynb        # visual + narrative
 └── artifacts/
+    ├── action_area.png             # tikz image depiction of the action as the area of inside energy flows
     ├── training.png                # training curve
     ├── position_trajectory.png     # model output (position space)
     ├── energy.png                  # Hamiltonian evolution
@@ -31,33 +32,37 @@ lf-pinn-harmonic-oscillator/
     └── notes.md                    # conceptual notes and reflections
 ```
 
-```mermaid
----
+
+```mmd
 config:
   theme: neo-dark
-  look: neo
+  look: handDrawn
 ---
-flowchart TD
-	%% Core blocks
-	A["Setting the Stage: Define SHO dynamics & Lagrangian"] --> B["Collocation Point Generation:<br>$$\ t\in [0, 2\pi]$$"]
-	B --> C["Neural Ansatz: $$ \ \text{MLP}(t, \theta) \rightarrow q_\theta(t) $$"]
-	C --> D["Automatic Differentiation: Compute $$ \ p_\theta(t) = \frac{d}{dt}q_\theta \text{ and } f_\theta=\frac{d}{dt}p_\theta=\frac{d^2}{dt^2}q_\theta$$"]
-	D --> E["Variational Physics Loss $$ \ \mathcal{L}_{phys} = \langle(\ddot{q} + \omega^2 q)^2\rangle  $$"]
-	E --> F["Total Loss: $$ \ \mathcal{L}_{tot} = \mathcal{L}_{phys} + \mathcal{L}_{data}  \ $$ (data term is optional)"]
-	F --> G["Optimizer (Adam): $$ \ \theta \leftarrow \theta - \eta \nabla \theta_{loss} $$"]
-	G -- "Training Loop Iterates over epochs" --> C
-	G --> H["Sanity Check with Plots: training curve, position trajectories, phase-space plots, $$ \ H_\theta(t) = H(q_\theta, p_\theta)$$"]
-	
-	
-	A@{ shape: rounded }
-	B@{ shape: rounded }
-	C@{ shape: rounded }
-	D@{ shape: rounded }
-	E@{ shape: rounded }
-	F@{ shape: rounded }
-	G@{ shape: rounded }
-```
+flowchart LR
 
+
+ subgraph PIML["PIML Framework"]
+    B["Collocation Point Generation:<br>$$\ t\in [0, 2\pi]$$"]
+    B --> C["Neural Ansatz: $$ \ \text{MLP}(t, \theta) \rightarrow q_\theta(t) $$"]
+    C --> D["Automatic Differentiation: Compute $$ \ p_\theta(t) = \frac{d}{dt}q_\theta \text{ and } f_\theta=\frac{d}{dt}p_\theta=\frac{d^2}{dt^2}q_\theta$$"]
+    D --> E["Variational Physics Loss $$ \ \mathcal{L}_{phys} = \langle(\ddot{q} + \omega^2 q)^2\rangle  $$"]
+    E --> F["Total Loss: $$ \ \mathcal{L}_{tot} = \mathcal{L}_{phys} + \mathcal{L}_{data}  \ $$ (data term is optional)"]
+    F --> G["Optimizer (Adam): $$ \ \theta \leftarrow \theta - \eta \nabla \theta_{loss} $$"]
+    G -- Training Loop Iterates over epochs --> C
+  end
+
+    readme["Setting the Stage: Define SHO dynamics & Lagrangian"] --> PIML
+    PIML --> H["Sanity Check with Plots: training curve, position trajectories, phase-space plots, $$ \ H_\theta(t) = H(q_\theta, p_\theta)$$"]
+
+    readme@{ shape: rounded}
+    PIML@{ shape: rounded}
+    B@{ shape: rounded}
+    C@{ shape: rounded}
+    D@{ shape: rounded}
+    E@{ shape: rounded}
+    F@{ shape: rounded}
+    G@{ shape: rounded}
+```
 ---
 
 ## 🔰 Implementation Overview
