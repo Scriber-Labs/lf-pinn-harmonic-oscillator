@@ -21,8 +21,7 @@ lf-pinn-harmonic-oscillator/
 │   └── demo.ipynb        # visual + narrative
 └── artifacts/
     ├── training.png                # training curve
-    ├── trajectory.png              # model output (position space)
-    ├── momentum.png                # model output (momentum space) ⚠️❓ Is this redundant? ❓⚠️
+    ├── position_trajectory.png     # model output (position space)
     ├── energy.png                  # Hamiltonian evolution
     ├── phase_space.png             # phase space with learned Hamiltonian flow
     ├── phase_space_quiver.png      # phase space with learned Hamiltonian vector field

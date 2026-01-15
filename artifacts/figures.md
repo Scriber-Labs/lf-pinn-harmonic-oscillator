@@ -12,8 +12,8 @@ Spikes reflect transient conflicts between trajectory fitting and antisymmetric
 structure in the learned generator. This corresponds with the network "re-learning" the Interestingly, the peak height of the spikes is approximately constant.
 ---
 
-## Figure 2 - Position Trajectories
-![Trajectories](trajectory.png)
+## Figure 2 - Position Trajectory
+![Position Trajectories](position.png)
 > Position component of the predicted trajectory $q_\theta(t)$ (green curve)
 > and the ground truth trajectory $q(t)$ (red dashed curve). 
 
