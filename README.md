@@ -31,7 +31,7 @@ lf-pinn-harmonic-oscillator/
     ├── figures.md                  # figure analysis
     └── notes.md                    # conceptual notes and reflections
 ```
-
+## Model Design
 
 ```mermaid
 %%====================================================================
