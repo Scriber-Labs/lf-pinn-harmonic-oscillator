@@ -21,7 +21,8 @@ lf-pinn-harmonic-oscillator/
 │   └── demo.ipynb        # visual + narrative
 └── artifacts/
     ├── training.png                # training curve
-    ├── trajectory.png              # model output 
+    ├── trajectory.png              # model output (position space)
+    ├── momentum.png                # model output (momentum space) ⚠️❓ Is this redundant? ❓⚠️
     ├── energy.png                  # Hamiltonian evolution
     ├── phase_space.png             # phase space with learned Hamiltonian flow
     ├── phase_space_quiver.png      # phase space with learned Hamiltonian vector field
@@ -104,18 +105,45 @@ python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 
 ## Next Steps
 - Train models with learnable frequency $\omega$.
 - Condition the network explicitly on $\omega$.
-- Explore richer low-fidelity physics constraints and Hamiltonian structure preservation (e.g., energy conservation loss term).
-- Explore ways to introduce inductive biases (limiations)
+- Explore richer low fidelity physics constraints and Hamiltonian structure preservation (e.g., energy conservation loss term).
+- Explore ways to introduce inductive biases (limitations)
 ---
 
 ## ⚠️ Limitations
-- **Temporal Resolution:** The model's accuracy is strictly dependent on the density of the collocation points ($n_\text{points}$).
-    - If $\omega$ increases or the time window is increased, undersampling can lead to aliasing thus preventing the network successfully capturing the underlying oscillation.
-- **Extrapolation (00D):** As a global function approximator, the MLP acts as an interpolator. 
-  - Consequently, performance degrades rapidly outside the training window $[0, 2\pi]$ unless periodic inductive biases are introduced.
-- **Soft Constraints:** Physics is enforced via a penalty term in the loss function ("soft constraint").
-   - Unlike symplectic integrators, this model does not strictly conserve the Hamiltonian, **⚠️⚠️Need to visualize this -> increase scale on energy plot⚠️⚠️**) 
-- **Spectral Bias:** Neural networks naturally learn lower-frequency components first. High-frequency oscillators may require specialized architectures or adoptive sampling (❓What is adoptive sampling?).
+1. **Point Density Matters** 
+   - Spectral bias causes aliasing when $\omega$ or $T_\text{max}$ are increased too much (conceptually analogous to Nyquist sampling). 
+       - Insufficient point density will be unable to resolve the curvature 'resolution' that is required by the governing differential equations.
+         - 🏡 **Take-Home Messages:** Always scale `n_points` relative to `T_max`.
+         - [ ] Are there any known methods of properly scaling n_points relative to T_max? Is this still low fidelity?
+     - Neural networks naturally learn lower-frequency components first. High-frequency oscillators may require specialized architectures or adoptive sampling 
+       - [ ] ❓What is adoptive sampling?).
+   - 📝 **Note:** A low-resolution collocation density breaks conservation even if optimization converges.
+     - [ ] Need Source
+
+2. **Constraint Interference** 
+
+    - Increasing $T_\text{max}$ increases non-convexity, introduces more competing constraints, and creates saddle points and poor basins.
+    - This manifests as gradually increasing "spike-amplitudes" in the training curve and reflects the optimizer being repeatedly redirected by global physics constraints (see Figure 1 in `../artifacts/figures.md`).
+    - Ultimately prevents the model converging too a stable basin.
+      - [ ] Provide a source
+      - [ ] What is a basin? What makes it poor vs. stable?
+    
+3. **Soft Constraints** 
+
+   - Unlike symplectic integrators, this model does not strictly conserve the Hamiltonian, 
+   - As the time window increases, the overall domain grows and the trivial solution $\begin{bmatrix} q_\theta \\ p_\theta \end{bmatrix} = \mathbf{0}$ increasingly dominates the loss landscape due to global satisfaction of physical constraints. 
+   - This is expected in 'pure' physics-informed learning without data anchoring.
+     - [ ] ⚠️ Would like to visualize this after i get the repo public-> increase scale on energy plot
+     - [ ] Is this where the energy constraint that PyCharm suggested comes in?
+
+4. **Resampling Trade-offs**
+   - **Static Points:** Stable training, but the model might overfit constraint satisfaction at specific locations.
+   - **Dynamic (Resampled) Points:** Better generalization across the whole domain,  but introduces variance (i.e., "noise") in the training curve.
+
+5. **Extrapolation (00D)** 
+   - As a global function approximator, the MLP acts as an interpolator. 
+   - Consequently, performance degrades rapidly outside the training window $[0, 2\pi]$ unless periodic inductive biases are introduced.
+     - [ ] Source?
 
 ---
 
