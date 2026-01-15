@@ -113,7 +113,7 @@ python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 
     - If $\omega$ increases or the time window is increased, undersampling can lead to aliasing thus preventing the network successfully capturing the underlying oscillation.
 - **Extrapolation (00D):** As a global function approximator, the MLP acts as an interpolator. 
   - Consequently, performance degrades rapidly outside the training window $[0, 2\pi]$ unless periodic inductive biases are introduced.
-- **Soft Constraints:** Physics is enforced via a penalty term in the lose function ("soft constratin").
+- **Soft Constraints:** Physics is enforced via a penalty term in the loss function ("soft constraint").
    - Unlike symplectic integrators, this model does not strictly conserve the Hamiltonian, **⚠️⚠️Need to visualize this -> increase scale on energy plot⚠️⚠️**) 
 - **Spectral Bias:** Neural networks naturally learn lower-frequency components first. High-frequency oscillators may require specialized architectures or adoptive sampling (❓What is adoptive sampling?).
 
