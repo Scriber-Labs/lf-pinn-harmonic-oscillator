@@ -3,6 +3,8 @@ A **low-fidelity physics-informed neural network (PINN)** demonstrating how phys
 This repository simulates a **1D simple harmonic oscillator (SHO)** with an unknown frequency while softly enforcing the equation of motion and energy conservation.
 The purpose of this repo is to serve as a foundational teaching module in physics-informed machine learning (PIML), emphasizing **interpretability** and **parsimony** oveer accuracy or performance.
 
+
+
 ---
 
 ## 🗂️ Repo structure
@@ -27,6 +29,30 @@ lf-pinn-harmonic-oscillator/
     ├── phase_space_quiver.png      # phase space with learned Hamiltonian vector field
     ├── figures.md                  # figure analysis
     └── notes.md                    # conceptual notes and reflections
+```
+
+```mermaid
+    flowchart TD
+        %% Core blocks
+        A[Problem Formulation Define SHO dynamics & Lagrangian] --> B[Collocation Point Generation Random t ∈ [0, Tₘₐₓ]]
+        B --> C[Neural Ansatz MLP(t; θ) → x̂(t)]
+        C --> D[Automatic Differentiation Compute dx̂/dt and d²x̂/dt²]
+        D --> E[Variational Physics Loss (ddx̂ + ω²·x̂)²]
+        E --> F[Total Loss (optional data term + physics loss)]
+        F --> G[Optimizer (Adam) θ ← θ − η∇θ Loss]
+        G --> H[Training Loop Iterate over epochs]
+        H --> I[Model Evaluation Check loss trajectory, phase‑space plots, energy conservation]
+
+        %% Optional extensions
+        subgraph Optional["Optional Extensions"]
+            J[Learnable ω] --> E
+            K[Dynamic Resampling of Collocation Points] --> B
+            L[Add Data Anchors] --> F
+        end
+
+        %% Styling
+        classDef block fill:#f0f8ff,stroke:#333,stroke-width:1px;
+        class A,B,C,D,E,F,G,H,I,J,K,L block;
 ```
 
 ---
@@ -73,7 +99,7 @@ Which can be simplified to:
     - Encodes Euler-Lagrange structure, second-order dynamics, and physical consistency.
 
 
-8. **Constrained optimization ❎⚠️**
+8. **Optimization Strategy ❎⚠️**
     -  Standard Adam optimizer with fixed learning rate.
     -  Optimization is intented to **reveal physical structure**, rather than fully customize for performance. 
     -  Future work: explore trainable $\omega$, unique optimizers, and richer PINN designs.
