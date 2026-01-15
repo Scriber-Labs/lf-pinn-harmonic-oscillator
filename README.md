@@ -33,35 +33,78 @@ lf-pinn-harmonic-oscillator/
 ```
 
 
-```mmd
-config:
-  theme: neo-dark
-  look: handDrawn
----
-flowchart LR
+```mermaid
+%%====================================================================
+%%  MERMAID CONFIG – everything is defined inline (no external CSS)
+%%====================================================================
+%%{ init: {
+        "theme": "base",
+        "themeVariables": {
+            /* ------- Palette (matches your original CSS) ------- */
+            "background": "#0d1117",          /* --zk-color-bg */
+            "primaryColor": "#14b5ff",        /* --zk-color-primary */
+            "secondaryColor": "#f78166",      /* --zk-color-secondary */
+            "tertiaryColor": "#00f5db",       /* --zk-color-math */
+            "lineColor": "#14b5ff",           /* borders */
+            "textColor": "#ffffff",           /* --zk-color-text */
+            "nodeBorder": "#14b5ff",
+            "nodeTextColor": "#ffffff",
+            "nodeBackground": "#161b22",      /* --zk-color-surface */
 
+            /* ------- Radii (rounded corners) ------- */
+            "borderRadius": "8px",
 
- subgraph PIML["PIML Framework"]
-    B["Collocation Point Generation:<br>$$\ t\in [0, 2\pi]$$"]
-    B --> C["Neural Ansatz: $$ \ \text{MLP}(t, \theta) \rightarrow q_\theta(t) $$"]
-    C --> D["Automatic Differentiation: Compute $$ \ p_\theta(t) = \frac{d}{dt}q_\theta \text{ and } f_\theta=\frac{d}{dt}p_\theta=\frac{d^2}{dt^2}q_\theta$$"]
-    D --> E["Variational Physics Loss $$ \ \mathcal{L}_{phys} = \langle(\ddot{q} + \omega^2 q)^2\rangle  $$"]
-    E --> F["Total Loss: $$ \ \mathcal{L}_{tot} = \mathcal{L}_{phys} + \mathcal{L}_{data}  \ $$ (data term is optional)"]
-    F --> G["Optimizer (Adam): $$ \ \theta \leftarrow \theta - \eta \nabla \theta_{loss} $$"]
-    G -- Training Loop Iterates over epochs --> C
-  end
+            /* ------- Font (same family as your CSS) ------- */
+            "fontFamily": "'Aclonica', sans-serif"
+        },
 
-    readme["Setting the Stage: Define SHO dynamics & Lagrangian"] --> PIML
-    PIML --> H["Sanity Check with Plots: training curve, position trajectories, phase-space plots, $$ \ H_\theta(t) = H(q_\theta, p_\theta)$$"]
+        /* Hand‑drawn sketchy look */
+        "handDrawn": true
+    } }%%
+%%====================================================================
 
-    readme@{ shape: rounded}
-    PIML@{ shape: rounded}
-    B@{ shape: rounded}
-    C@{ shape: rounded}
-    D@{ shape: rounded}
-    E@{ shape: rounded}
-    F@{ shape: rounded}
-    G@{ shape: rounded}
+flowchart TB
+    %%--------------------------------------------------------------
+    %%  CLASS DEFINITIONS – we encode everything we need here
+    %%--------------------------------------------------------------
+    classDef zkNode fill:#161b22,stroke:#14b5ff,stroke-width:2px,color:#fff,stroke-dasharray:5 5,rx:8,ry:8;
+    classDef zkRoundedNode fill:#161b22,stroke:#14b5ff,stroke-width:2px,color:#fff,stroke-dasharray:5 5,rx:8,ry:8;
+    classDef zkTitle fill:none,stroke:none,color:#14b5ff,font-size:1.2em,font-weight:bold;
+
+    %%--------------------------------------------------------------
+    %%  MAIN FRAMEWORK SUBGRAPH
+    %%--------------------------------------------------------------
+    subgraph PIML["PIML Framework"]
+        direction TB
+        B["Collocation Point Generation: $$\ t\ \in[0,2\pi]$$"]:::zkRoundedNode
+        C["Neural Ansatz: $$\ \text{MLP}(t, \theta)\rightarrow q_{\theta}(t)$$"]:::zkRoundedNode
+        D["Automatic Differentiation: $$\ p_{\theta}(t)=\frac{d}{dt}q_{\theta},\quad \;f_{\theta}=\ \frac{d}{dt}p_{\ \theta}=\ \frac{d^{2}}{dt^{2}}q_{\ \theta}$$"]:::zkRoundedNode
+        E["Variational Physics Loss: $$\ \mathcal{L}_{phys}=\ \langle(\ddot{q}+\omega^{2}q)^{2}\ \rangle$$"]:::zkRoundedNode
+        F["Total Loss: $$\ \mathcal{L}_{tot}=\mathcal{L}_{phys}+\ \mathcal{L}_{data}$$ (data optional)"]:::zkRoundedNode
+        G["Optimizer (Adam): $$\ \theta \leftarrow\ \theta-\ \eta\ \nabla_{\ \theta}\ \mathcal{L}_{tot}$$"]:::zkRoundedNode
+
+        B --> C
+        C --> D
+        D --> E
+        E --> F
+        F --> G
+        G -- "Training Loop iterates over epochs" --> C
+    end
+
+    %%--------------------------------------------------------------
+    %%  Ancillary blocks
+    %%--------------------------------------------------------------
+    readme["Setting the Stage: Define SHO dynamics &amp; Lagrangian"]:::zkNode
+    H["Sanity Check with Plots: training curve, trajectories, phase‑space, $$\ H_{\theta}(t)=H(q_{\theta},p_{\theta})$$"]:::zkRoundedNode
+
+    readme --> PIML:::zkRoundedNode
+    PIML --> H
+
+    %%--------------------------------------------------------------
+    %%  Apply the rounded‑node class to everything (explicit)
+    %%--------------------------------------------------------------
+    %%class PIML zkRoundedNode
+    %%class B C D E F G readme H zkRoundedNode
 ```
 ---
 
@@ -136,10 +179,7 @@ python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 
 ```
 ---
 
-## 🏡 Take Home Messages
-<img src="artifacts/action_area.png" alt="Action as the area inside the energy contour." width="400" height="400">
 
----
 
 ## Next Steps
 - Train models with learnable frequency $\omega$.
