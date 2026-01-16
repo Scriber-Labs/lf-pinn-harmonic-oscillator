@@ -1,9 +1,10 @@
 # lf-pinn-harmonic-oscillator
 A **low-fidelity physics-informed neural network (PINN)** demonstrating how physics can guide learning via variational principles. 
-This repository simulates a **1D simple harmonic oscillator (SHO)** with an unknown frequency while softly enforcing the equation of motion and energy conservation.
-The purpose of this repo is to serve as a foundational teaching module in physics-informed machine learning (PIML), emphasizing **interpretability** and **parsimony** over accuracy or performance.
+- Simulates a **1D simple harmonic oscillator (SHO)** with an unknown frequency while softly enforcing the equation of motion and analyzing 
+energy conservation.
+- Prioritizes geometric intuition and failure-mode visibility over benchmark performance.
 
-
+> 🥅 The purpose of this repo is to serve as a foundational teaching module in physics-informed machine learning (PIML), emphasizing **interpretability** and **parsimony** over accuracy or performance.
 
 ---
 
@@ -14,6 +15,9 @@ lf-pinn-harmonic-oscillator/
 ├── README.md
 ├── requirements.txt
 ├── pyproject.toml
+├── assets/
+│   ├── images/
+│   ├── action_area.png   # tikz image depiction of the action as the area of inside energy flows
 ├── src/
 │   ├── model.py          # neural network ansatz
 │   ├── physics.py        # SHO + variational loss
@@ -22,14 +26,18 @@ lf-pinn-harmonic-oscillator/
 ├── notebooks/
 │   └── demo.ipynb        # visual + narrative
 └── artifacts/
-    ├── action_area.png             # tikz image depiction of the action as the area of inside energy flows
-    ├── training.png                # training curve
-    ├── position_trajectory.png     # model output (position space)
-    ├── energy.png                  # Hamiltonian evolution
-    ├── phase_space.png             # phase space with learned Hamiltonian flow
-    ├── phase_space_quiver.png      # phase space with learned Hamiltonian vector field
-    ├── figures.md                  # figure analysis
-    └── notes.md                    # conceptual notes and reflections
+    ├── notes.md                        # conceptual notes and reflection
+    ├── figures.md                      # structure-based analysis of demo visuals
+    └── demo_visuals/                          
+        ├── training.png                # training curve
+        ├── position_space.png          # model output (position space)
+        ├── energy.png                  # Hamiltonian evolution
+        ├── phase_space_flow.png        # phase space with learned Hamiltonian flow
+        └── phase_space_quiver.png      # phase space with learned Hamiltonian vector field
+    
+    
+    
+
 ```
 ## Model Design
 
@@ -67,7 +75,7 @@ flowchart TB
     %%--------------------------------------------------------------
     %%  CLASS DEFINITIONS – we encode everything we need here
     %%--------------------------------------------------------------
-    classDef zkNode fill:#161b22,stroke:#14b5ff,stroke-width:2px,color:#fff,stroke-dasharray:5 5,rx:8,ry:8;
+    classDef zkNode fill:#161b22,stroke:#14b5ff,stroke-width:2px,color:#fff,rx:8,ry:8;
     classDef zkRoundedNode fill:#161b22,stroke:#14b5ff,stroke-width:2px,color:#fff,stroke-dasharray:5 5,rx:8,ry:8;
     classDef zkTitle fill:none,stroke:none,color:#14b5ff,font-size:1.2em,font-weight:bold;
 
@@ -76,12 +84,12 @@ flowchart TB
     %%--------------------------------------------------------------
     subgraph PIML["PIML Framework"]
         direction TB
-        B["1️⃣ Collocation Point Generation: $$\ t\ \in[0,2\pi]$$"]:::zkRoundedNode
-        C["2️⃣ Neural Ansatz: $$\ \text{MLP}(t, \theta)\rightarrow q_{\theta}(t)$$"]:::zkRoundedNode
-        D["3️⃣ Automatic Differentiation: $$\ p_{\theta}(t)=\frac{d}{dt}q_{\theta},\quad \;f_{\theta}=\ \frac{d}{dt}p_{\ \theta}=\ \frac{d^{2}}{dt^{2}}q_{\ \theta}$$"]:::zkRoundedNode
-        E["4️⃣ Variational Physics Loss: $$\ \mathcal{L}_{phys}=\ \langle(\ddot{q}+\omega^{2}q)^{2}\ \rangle$$"]:::zkRoundedNode
-        F["5️⃣ Total Loss: $$\ \mathcal{L}_{tot}=\mathcal{L}_{phys}+\ \mathcal{L}_{data}$$ (data optional)"]:::zkRoundedNode
-        G["6️⃣ Optimizer (Adam): $$\ \theta \leftarrow\ \theta-\ \eta\ \nabla_{\ \theta}\ \mathcal{L}_{tot}$$"]:::zkRoundedNode
+        B["1️⃣ Collocation Point Generation: $$\ t\ \in[0,2\pi]$$"]:::zkNode
+        C["2️⃣ Neural Ansatz: $$\ \text{MLP}(t, \theta)\rightarrow q_{\theta}(t)$$"]:::zkNode
+        D["3️⃣ Automatic Differentiation: $$\ p_{\theta}(t)=\frac{d}{dt}q_{\theta},\quad \;f_{\theta}=\ \frac{d}{dt}p_{\ \theta}=\ \frac{d^{2}}{dt^{2}}q_{\ \theta}$$"]:::zkNode
+        E["4️⃣ Variational Physics Loss: $$\ \mathcal{L}_{phys}=\ \langle(\ddot{q}+\omega^{2}q)^{2}\ \rangle$$"]:::zkNode
+        F["5️⃣ Total Loss: $$\ \mathcal{L}_{tot}=\mathcal{L}_{phys} \ $$ (data loss is optional in a low fidelity PINN)"]:::zkNode
+        G["6️⃣ Optimizer (Adam): $$\ \theta \leftarrow\ \theta-\ \eta\ \nabla_{\ \theta}\ \mathcal{L}_{tot}$$"]:::zkNode
 
         B --> C
         C --> D
@@ -95,7 +103,7 @@ flowchart TB
     %%  Ancillary blocks
     %%--------------------------------------------------------------
     readme["0️⃣ Setting the Stage: Define SHO dynamics &amp; Lagrangian"]:::zkNode
-    H["7️⃣ Sanity Check with Plots: training curve, trajectories, phase‑space, $$\ H_{\theta}(t)=H(q_{\theta},p_{\theta})$$"]:::zkRoundedNode
+    H["7️⃣ Sanity Check with Plots: training curve, trajectories, phase‑space, $$\ H_{\theta}(t)=H(q_{\theta},p_{\theta})$$"]:::zkNode
 
     readme --> PIML:::zkRoundedNode
     PIML --> H
@@ -123,7 +131,7 @@ where $q(t)$ denotes the trajectory of the oscillator's position about an equili
 
 ### Variational loss (soft constraint $\Rightarrow$ low fidelity) 
 
-Rather than solving exactly, the **Euler-Lagrange residual** is penalized at collation points in time.
+Rather than solving the equations of motion exactly, the **Euler-Lagrange residual** is penalized at collation points in time.
 
   $$ \mathcal{L}_{phys} = \bigg< \bigg( \frac{d}{dt}\frac{\partial L}{\partial \dot{q}} - \frac{\partial L}{\partial q} \bigg)^2 \bigg> $$
 
@@ -134,13 +142,13 @@ Which can be simplified to:
 > This encourages the network to respect physical dynamics. Note that the physical dynamics we want the model to respect are not directly enforced - hence "low-fidelity".
 ---
 
-## 5 Machine Learning Stages (Brunton-inspired) 
+## Five Machine Learning Stages (Brunton-inspired) 
 ### 1. Problem formulation ✔️
     
    > **Research Question:** Can a neural function approximator recover physically meaningful motion via minimization of a **variational residual**, rather than fitting observed data?
    
 ### 2. Data collection and curation ✖️
-- Intentionally minimal (i.e.. no observational trajectories).
+- Intentionally minimal (i.e., no observational trajectories).
 - Collocation points in time serve as synthetic "data" to embed physics into training.
     
 ### 3. Neural architecture ⚠️
@@ -155,9 +163,7 @@ Encodes Euler-Lagrange structure, second-order dynamics, and physical consistenc
 
 ### 5. Optimization Strategy ❎⚠️
 -  Standard Adam optimizer with fixed learning rate.
--  Optimization is intended to **reveal physical structure**, rather than fully customize for performance. 
--  
-
+-  Optimization is intended to **reveal physical structure**, rather than fully customize for performance.
 
 ---
 
@@ -182,7 +188,7 @@ python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 
 ---
 
 ## ⚠️ Limitations
-### 1. Spectral bias 
+### 1. Spectral bias and Collocation Resolution
 Increasing $\omega$ or $T_\text{max}$ too much causes aliasing (conceptually analogous to Nyquist sampling). This behavior is consistent with reported PINN failure modes under undersampling (Basir & Senocak, 2022).
   - Insufficient point density will be unable to resolve the curvature 'resolution' that is required by the governing differential equations.
   - Neural networks naturally learn lower-frequency components first. High-frequency oscillators may require specialized architectures or adaptive sampling.
@@ -191,7 +197,7 @@ Increasing $\omega$ or $T_\text{max}$ too much causes aliasing (conceptually ana
 > 🏡 In practice, collocation density should scale with both the simulation window and the highest frequency content expected in the solution.
 
 ### 2. **Constraint Interference**
-Increasing $T_\text{max}$ increases non-convexity, introduces more competing constraints, and creates saddle points and poor basins.
+Increasing $T_\text{max}$ increases non-convexity, introduces more competing constraints, and creates saddle points and narrow/unstable basins of attraction.
 - This manifests as gradually increasing "spike-amplitudes" in the training curve and reflects the optimizer being repeatedly redirected by global physics constraints (see Figure 1 in `../artifacts/figures.md`).
 - Ultimately prevents the model converging to a stable basin.
     
@@ -204,8 +210,8 @@ Unlike symplectic integrators, this model does not strictly conserve the Hamilto
    - **Static Points:** Stable training, but the model might overfit constraint satisfaction at specific locations.
    - **Dynamic (Resampled) Points:** Better generalization across the whole domain,  but introduces variance (i.e., "noise") in the training curve.
 
-### 5. **Extrapolation (00D)** 
-   - As a global function approximator, the MLP primarily interpolates within the training domain (Brunton & Kutz, 2022). 
+### 5. **Extrapolation (OOD)** 
+   - As a global function approximator trained on a bounded domain, the MLP primarily interpolates within the training domain (Brunton & Kutz, 2022). 
    - Consequently, performance degrades rapidly outside the training window $[0, 2\pi]$ unless periodic inductive biases are introduced.
 
 ---

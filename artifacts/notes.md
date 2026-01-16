@@ -42,7 +42,7 @@ In other words, $\omega$ is a non-degenerate function if and only if the zero ve
         - Conservation of phase-space volume
 
 ## Symplectic Forms and Harmonic Oscillator PINNs
-![action as the area inside a Hamiltonian flow](action_area.png)
+![action as the area inside a Hamiltonian flow](../assets/images/action_area.png)
 
 For the 1D harmonic oscillator PINN, the symplectic form $\omega = dq \wedge dp$ induces Hamilton's equations:
 $$ \dot{q}= \frac{\partial H}{\partial p}, \quad \dot{p}=-\frac{\partial H}{\partial q}$$
