@@ -129,6 +129,9 @@ where $q(t)$ denotes the trajectory of the oscillator's position about an equili
 
   $$ q_\theta(t) = \text{MLP}(t, \theta) $$
 
+  ![MLP](./assets/images/mlp.png)
+  *Multilayer perceptron architecture implementing $\text{Linear}\rightarrow \text{tanh} \rightarrow \text{Linear} \rightarrow \text{tanh} \rightarrow \text{Linear}$, with two hidden layers of width 64.*
+
 ### Variational loss (soft constraint $\Rightarrow$ low fidelity) 
 
 Rather than solving the equations of motion exactly, the **Euler-Lagrange residual** is penalized at collation points in time.
@@ -137,7 +140,7 @@ Rather than solving the equations of motion exactly, the **Euler-Lagrange residu
 
 Which can be simplified to:
 
-  $$ \mathcal{L}_{phys} = \big<(\ddot{q} + \omega^2 q)^2 \big> $$
+  $$ \mathcal{L}_{phys} = \big<(\ddot{q} + \omega^2 q)^2 \big> $
 
 > This encourages the network to respect physical dynamics. Note that the physical dynamics we want the model to respect are not directly enforced - hence "low-fidelity".
 ---
