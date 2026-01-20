@@ -14,41 +14,51 @@ The emphasis is on *structure* (symplectic area, bivectors, and generators of fl
 - [ ] Show that $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
 - [ ] Concept check: Is the phase-space pseudoscalar $I=dq\wedge dp$ a *differential-sized* version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
 - [ ] What is a bivector contraction?
+---
 
-### Bilinear skew-symmetric map
-A function $\omega : V\times V \rightarrow \mathbb{R}$ is **bilinear** and **skew-symmetric** if and only if it is linear in
-    $$ \forall u,v \in V, \quad \omega(u,v)=-\omega(v,u)$$
+## Bilinear skew-symmetric map
+A function $\omega : V\times V \rightarrow \mathbb{R}$ is **bilinear** and **skew-symmetric** if it is linear in
+    $$ \forall u,v \in V, \quad \omega(u,v)=-\omega(v,u).$$
 
-🏡 **Take-Home Message:** Skew symmetry alone does not imply a function is bilinear. 
-### Non-degeneracy
-Let $V$ be a vector space over the real numbers, and let $\omega: V\times V \rightarrow \mathbb{R}$ be a function that is 'linear in each argument'. 
+It is **bilinear** if it is linear in *each* argument.
 
-The function $\omega$ is said to be **non-degenerate** iff: 
+> 🏡 **Take-Home Message:** Skew symmetry alone does not imply a function is bilinear. 
+
+## Non-degeneracy
+Let $V$ be a vector space over the real numbers, and let $\omega: V\times V \rightarrow \mathbb{R}$ be a bilinear function. 
+The function $\omega$ is said to be **non-degenerate** iff
         
-$$ \{ v \in V | \forall w\in V, \omega(v,w)=0\} = \{ 0 \} $$
+$$ \{ v \in V | \forall w\in V, \omega(v,w)=0\} = \{ 0 \} .$$
 
-In other words, $\omega$ is a non-degenerate function if and only if the zero vector is the only vector that pairs to zero along with every other vector in $v\in V$.
+Equivalently, $\omega$ is a non-degenerate function if and only if the zero vector is the only vector that pairs to zero along with every other vector in $v\in V$.
 
-💎 **Gem Take-away:** "Non-degeneracy means there exists an invertible mapping $\omega$ between vectors and covectors.
+> 💎 **Gem Take-away:** "Non-degeneracy means there exists an invertible mapping $\omega$ between vectors and covectors.
 
+---
 
 ### Symplectic form
-- Casual Definition: A **symplectic form** is a smooth, closed, non-degenerate skew-symmetric 2-form that tells us how to measure 'area' in a phase-space. 
-- Technical definition: A **symplectic form** is a non-degenerate, closed 2-form defining the canonical orientation and geometery of phase space. This includes signed area (recal: orientation + signed area = bivector)
-  
-  - For a 1D system in phase-spacae $(q,p)$, the corresponding symplectic form is $$ \omega = dq\wedge dp $$
-  - Properties:
-     1. **closed:** $d\omega = 0$ 
-     2. **non-degenerate**
-     3. **smooth** as a differential form ❓
-     4. **antisymmetric**: $$dq\wedge dp = -dp \wedge dq$$
-        Importantly, this antisymmetry property of phase space in physics is the root of:
-        - Poisson brackets
-        - Hamilton's equations
-        - Conservation of phase-space volume
+- Casual Definition: A **symplectic form** measures *signed area* in phase space $(\bf{q}, \bf{p})$ 
+- Technical definition: A **symplectic form** is a smooth, closed, non-degenerate, 2-form that fixes the orientation and geometry of phase spce. 
+
+For a 1D system in phase-space $(q,p)$, the corresponding symplectic form is $$ \omega = dq\wedge dp $$
+
+Properties:
+1. **Closed:** $d\omega = 0$ 
+2. **Non-degenerate**
+3. **Smooth** differential form 
+   - [ ] Is this the same thing as 'well-behaved' functions in intro quantum mechanics courses?
+4. **Antisymmetric**: $dq\wedge dp = -dp \wedge dq$
+
+> 🏡 The antisymmetry property of phase space in physics is the root of:
+ >  - Poisson brackets
+ >  - Hamilton's equations
+ >  - Conservation of phase-space volume
 
 ## Symplectic Forms and Harmonic Oscillator PINNs
-<img src="assets/images/action_area.png" alt="Action as the area inside the energy contour." width="500">
+<figure>
+  <img src="assets/images/action_area.png" alt="Action as the area inside the energy contour." width="500">
+  <figcaption><em>Figure 1:</em> Phase space trajectory of the harmonic oscillator.</figcaption>
+</figure>
 
 For the 1D harmonic oscillator PINN, the symplectic form $\omega = dq \wedge dp$ induces Hamilton's equations:
 $$ \dot{q}= \frac{\partial H}{\partial p}, \quad \dot{p}=-\frac{\partial H}{\partial q}$$
