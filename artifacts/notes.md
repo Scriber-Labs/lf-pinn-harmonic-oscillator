@@ -1,12 +1,18 @@
-# LF PINN Harmonic Oscillator Notes
-## Terminology
-- [ ] covectors vs. vectors 
-- [ ] covectors in geometric algebra
-- [ ] Derivation of Hamiltonian mechanics (particullarly in terms of kinetic and potential energies) using geometric algebra.
-- [ ] Derivation of the Laplacian in terms of the Hamiltonian.
-- [ ] Are their any 'dual' objects to covectors the same way the cross product and the wedge product relate?
-- [ ] Show me that the matrix $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
-- [ ] Concept check: Is the phase-space pseudoscalar $I=dq\wedge dp$ just a 'differential-sizsed' version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
+# LF PINN Harmonic Oscillator Notes - Geometry Notes
+> **Scriber Labs -**  Intuition-first notes connecting Hamiltionian mechanics, symplectic geometry, and low-fidelity PINNs. 
+
+## Scope and Goals
+These notes collect the geometric ideas that motivate the **low-fidelity PINN (LF-PINN)** for the 1D simple harmonic oscillator (SHO). 
+The emphasis is on *structure* (symplectic area, bivectors, and generators of flow), not on building an exact symplectic integrator.  
+
+## Terminology & Open Threads
+- [ ] Vectors vs. covectors (and why momenta live naturally as covectors)
+- [ ] Covectors in geometric/ Clifford algebra
+- [ ] Hamiltonian mechanics from geometry (kinetic + potential $\rightarrow$ flow)
+- [ ] Laplacian from Hamiltonian structure
+- [ ] Duals of covectors (contrast with cross vs. wedge products)
+- [ ] Show that $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
+- [ ] Concept check: Is the phase-space pseudoscalar $I=dq\wedge dp$ a *differential-sized* version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
 - [ ] What is a bivector contraction?
 
 ### Bilinear skew-symmetric map
