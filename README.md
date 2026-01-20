@@ -128,10 +128,13 @@ where $q(t)$ denotes the trajectory of the oscillator's position about an equili
 ### Neural ansatz
 
   $$ q_\theta(t) = \text{MLP}(t, \theta) $$
-    
-  <img src="./assets/images/mlp.png" alt="Multilayer perceptron architecture implementing." height="300">
 
-  *Multilayer perceptron architecture implementing. $\text{Linear}\rightarrow \text{tanh} \rightarrow \text{Linear} \rightarrow \text{tanh} \rightarrow \text{Linear}$, with two hidden layers of width 64.*
+<figure>    
+  <img src="./assets/images/mlp.png" alt="Multilayer perceptron architecture." height="300">
+  <figcaption>Multilayer perceptron architecture implementing. $\text{Linear}\rightarrow \text{tanh} \rightarrow \text{Linear} \rightarrow \text{tanh} \rightarrow \text{Linear}$, with two hidden layers of width 64.</figcaption>
+</figure>
+
+
 
 ### Variational loss (soft constraint $\Rightarrow$ low fidelity) 
 

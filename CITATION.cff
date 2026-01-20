@@ -1,0 +1,7 @@
+cff-version: 0.0.1
+title: LF-PINN Harmonic Oscillator
+authors:
+  - family-names: Shriver
+    given-names: Lauren
+message: "If you use this repository, please cite it."
+license: MIT
