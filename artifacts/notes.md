@@ -3,17 +3,7 @@
 
 ## Scope and Goals
 These notes collect the geometric ideas that motivate the **low-fidelity PINN (LF-PINN)** for the 1D simple harmonic oscillator (SHO). 
-The emphasis is on *structure* (symplectic area, bivectors, and generators of flow), not on building an exact symplectic integrator.  
-
-## Terminology & Open Threads
-- [ ] Vectors vs. covectors (and why momenta live naturally as covectors)
-- [ ] Covectors in geometric/ Clifford algebra
-- [ ] Hamiltonian mechanics from geometry (kinetic + potential $\rightarrow$ flow)
-- [ ] Laplacian from Hamiltonian structure
-- [ ] Duals of covectors (contrast with cross vs. wedge products)
-- [ ] Show that $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
-- [ ] Concept check: Is the phase-space pseudoscalar $I=dq\wedge dp$ a *differential-sized* version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
-- [ ] What is a bivector contraction?
+The emphasis is on *structure* (symplectic area, bivectors, and generators of flow), not on building an exact symplectic integrator.
 ---
 
 ## Bilinear skew-symmetric map
@@ -36,7 +26,7 @@ Equivalently, $\omega$ is a non-degenerate function if and only if the zero vect
 
 ---
 
-### Symplectic form
+## Symplectic form
 - Casual Definition: A **symplectic form** measures *signed area* in phase space $(\bf{q}, \bf{p})$ 
 - Technical definition: A **symplectic form** is a smooth, closed, non-degenerate, 2-form that fixes the orientation and geometry of phase spce. 
 
@@ -54,11 +44,15 @@ Properties:
  >  - Hamilton's equations
  >  - Conservation of phase-space volume
 
-## Symplectic Forms and Harmonic Oscillator PINNs
+## Action as Phase-Space Area
 <figure>
   <img src="assets/images/action_area.png" alt="Action as the area inside the energy contour." width="500">
-  <figcaption><em>Figure 1:</em> Phase space trajectory of the harmonic oscillator.</figcaption>
+  <figcaption><em>Figure 1:</em> An arbitrary space energy contour of the harmonic oscillator. </figcaption>
 </figure>
+
+By Stokes' theorem, action $J=\oint{pdq}$ is precisely the signed area enclosed in $(q,p)$ space.
+
+## Symplectic Forms and Harmonic Oscillator PINNs
 
 For the 1D harmonic oscillator PINN, the symplectic form $\omega = dq \wedge dp$ induces Hamilton's equations:
 $$ \dot{q}= \frac{\partial H}{\partial p}, \quad \dot{p}=-\frac{\partial H}{\partial q}$$
@@ -67,38 +61,59 @@ where
 
 $$H(q,p) = \frac{p^2}{2m} + \frac{1}{2}k q^2 $$
 
-is the Hamiltonian for the 1D harmonic oscillator. This is the actual constraint you want your PINN to respect. 
+is the Hamiltonian for the 1D harmonic oscillator. 
 
+> ✨ This is the actual constraint our PINN is encouraged to respect. 
 
-In this repository, "low-fidelity PINN" means that physical structure is encouraged via soft penalty terms in the loss function (rather than enforced exactly). The main point is to produce interpretible results; NOT to build a fully syumplectic 'neural' (❓) integrator. In other words, the models is not guaranteed to be symjplectic, however it is biased to wards the Hamiltonian.
+## Low-Fidelity: What it means for the purposes of this repo and Scriber Labs.
+For this repository, **low fidelty** means
+- Physical structure is *encouraged* via a soft penalty term in the loss
+- Constraints are not directly enforced
+- The goal is *interpretibility*, not a guaranteed symplectic integrator
 
-According to chat-GPT, low-fidelity means (🤔 is this a technical description, or just approximate)...
-- Penalizing violations of symplectic structure 
-- It is not exactly enforced (🤔 what exactly (pardon the pun) does this mean?).
+> 🏡 Thus, the overall model is biased toward a Hamiltonian structure without being strictly symplectic. 
 
-Examples of valid LF constraints:
+### 🔵 Examples of valid LF constraints:
 - Penalizing the residuals...
     $$ \begin{align*}
-        \partial_tq - \frac{\partial H}{\partial p},  \\ \\
+        \partial_tq - \frac{\partial H}{\partial p},  \quad
         \partial_tp + \frac{\partial H}{\partial q}
         \end{align*}    $$
 
 - Penalizing phase-space volume drift.
 
+---
+
 ## Clifford Algebra Detour
 In Clifford algebra $\omega = \partial_q \wedge \partial_p$ is just a bivector:
     $$ \partial_q \wedge \partial_p = \frac{1}{2}(\partial_q\partial_p - \partial_p\partial_q)$$
 
-💎 Therefore, we can say $\omega$ generates rotations in phase space and Hamiltonian flow is a *bivector-generated motion*. 
+💎 Interpretation:
+- $\omega$ generates rotations in phase space 
+- Hamiltonian flow is a **bivector-generated motion**. 
 
 ### Bivector Operator as a Symplectic Matrix
 The matrix $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
 In Clifford algebra language:
-- $J$ is equivalent to multiplication by the phase-space pseudoscalar.
+- $J$ corresponds to multiplication by the phase-space pseudoscalar
 - Poisson brackets are bivector contractions.
-- Hamilton's equations are rotations generated by the bivector $\omega$. 
+- Hamilton's equations are rotations generated by the bivector $\omega$
 
-## 🏡 Take Home Messages
+---
+
+## Next Steps: Write First Zettels
+- [ ] Vectors vs. covectors (and why momenta live naturally as covectors)
+- [ ] Covectors in geometric/ Clifford algebra
+- [ ] Hamiltonian mechanics from geometry (kinetic + potential $\rightarrow$ flow)
+- [ ] Laplacian from Hamiltonian structure
+- [ ] Duals of covectors (contrast with cross vs. wedge products)
+- [ ] Show that $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
+- [ ] Concept check: Is the phase-space pseudoscalar $I=dq\wedge dp$ a *differential-sized* version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
+- [ ] Bivector contractions and Poisson brackets.
 
 
+## 📝 Final Remarks
+- The action (units of angular momentum) is not just a phase-space volume, it is an *oriented* phase space volume.
+- For symplectic systems, the 'action' is signed areas enclosed by 'Hamiltonian flows'
+- Hamiltonian dynamics = bivector-generated motion.
 - The action $S$ is the area inside energy flows in phase space.
