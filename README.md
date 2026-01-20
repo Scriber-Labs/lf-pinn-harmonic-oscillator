@@ -130,6 +130,7 @@ where $q(t)$ denotes the trajectory of the oscillator's position about an equili
   $$ q_\theta(t) = \text{MLP}(t, \theta) $$
 
   ![MLP](./assets/images/mlp.png)
+
   *Multilayer perceptron architecture implementing $\text{Linear}\rightarrow \text{tanh} \rightarrow \text{Linear} \rightarrow \text{tanh} \rightarrow \text{Linear}$, with two hidden layers of width 64.*
 
 ### Variational loss (soft constraint $\Rightarrow$ low fidelity) 
