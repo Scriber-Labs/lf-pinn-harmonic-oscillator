@@ -141,7 +141,7 @@ Rather than solving the equations of motion exactly, the **Euler-Lagrange residu
 
 Which can be simplified to:
 
-  $$ \mathcal{L}_{phys} = \big<(\ddot{q} + \omega^2 q)^2 \big> $
+  $$ \mathcal{L}_{phys} = \big<(\ddot{q} + \omega^2 q)^2 \big> $$
 
 > This encourages the network to respect physical dynamics. Note that the physical dynamics we want the model to respect are not directly enforced - hence "low-fidelity".
 ---
