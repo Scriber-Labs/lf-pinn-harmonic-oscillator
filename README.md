@@ -43,77 +43,80 @@ lf-pinn-harmonic-oscillator/
 
 ```mermaid
 %%====================================================================
-%%  MERMAID CONFIG – everything is defined inline (no external CSS)
+%%  CURVED-CORNER MERMAID WITH SUBGRAPH HEADER
 %%====================================================================
 %%{ init: {
         "theme": "base",
         "themeVariables": {
-            /* ------- Palette (matches your original CSS) ------- */
-            "background": "#0d1117",          /* --zk-color-bg */
-            "primaryColor": "#14b5ff",        /* --zk-color-primary */
-            "secondaryColor": "#f78166",      /* --zk-color-secondary */
-            "tertiaryColor": "#00f5db",       /* --zk-color-math */
-            "lineColor": "#14b5ff",           /* borders */
-            "textColor": "#ffffff",           /* --zk-color-text */
-            "nodeBorder": "#14b5ff",
-            "nodeTextColor": "#ffffff",
-            "nodeBackground": "#161b22",      /* --zk-color-surface */
-
-            /* ------- Radii (rounded corners) ------- */
-            "borderRadius": "8px",
-
-            /* ------- Font (same family as your CSS) ------- */
-            "fontFamily": "'Aclonica', sans-serif"
+            "background": "#0d1117",
+            "lineColor": "#14b5ff",
+            "textColor": "#ffffff",
+            "fontFamily": "'Aclonica', sans-serif",
+            "borderRadius": "16"       /* larger radius for more rounded corners */
         },
-
-        /* Hand‑drawn sketchy look */
         "handDrawn": true
     } }%%
 %%====================================================================
 
 flowchart TB
-    %%--------------------------------------------------------------
-    %%  CLASS DEFINITIONS – we encode everything we need here
-    %%--------------------------------------------------------------
-    classDef zkNode fill:#161b22,stroke:#14b5ff,stroke-width:2px,color:#fff,rx:8,ry:8;
-    classDef zkRoundedNode fill:#161b22,stroke:#14b5ff,stroke-width:2px,color:#fff,stroke-dasharray:5 5,rx:8,ry:8;
-    classDef zkTitle fill:none,stroke:none,color:#14b5ff,font-size:1.2em,font-weight:bold;
 
     %%--------------------------------------------------------------
-    %%  MAIN FRAMEWORK SUBGRAPH
+    %%  COLOR RAMP (pseudo-gradient)
+    %%--------------------------------------------------------------
+    classDef stage0 fill:#0b1c2d,stroke:#14b5ff,stroke-width:2px,color:#ffffff,rx:12,ry:12;
+    classDef stage1 fill:#0f2a3d,stroke:#14b5ff,stroke-width:2px,color:#ffffff,rx:12,ry:12;
+    classDef stage2 fill:#103b4f,stroke:#00f5db,stroke-width:2px,color:#ffffff,rx:12,ry:12;
+    classDef stage3 fill:#124f55,stroke:#00f5db,stroke-width:2px,color:#ffffff,rx:12,ry:12;
+    classDef stage4 fill:#1a6b63,stroke:#00f5db,stroke-width:2px,color:#ffffff,rx:12,ry:12;
+    classDef stage5 fill:#1f4e5f,stroke:#f78166,stroke-width:2px,color:#ffffff,rx:12,ry:12;
+    classDef stage6 fill:#3a2f2a,stroke:#f78166,stroke-width:2px,color:#ffffff,rx:12,ry:12;
+    classDef stage7 fill:#0f2a3d,stroke:#14b5ff,stroke-width:2px,color:#ffffff,rx:12,ry:12;
+
+    classDef dashed fill:#161b22,stroke:#14b5ff,stroke-dasharray:6 6,color:#ffffff,rx:12,ry:12;
+
+    %%--------------------------------------------------------------
+    %%  MAIN PIPELINE SUBGRAPH WITH HEADER
     %%--------------------------------------------------------------
     subgraph PIML["PIML Framework"]
         direction TB
-        B["1️⃣ Collocation Point Generation: $$\ t\ \in[0,2\pi]$$"]:::zkNode
-        C["2️⃣ Neural Ansatz: $$\ \text{MLP}(t, \theta)\rightarrow q_{\theta}(t)$$"]:::zkNode
-        D["3️⃣ Automatic Differentiation: $$\ p_{\theta}(t)=\frac{d}{dt}q_{\theta},\quad \;f_{\theta}=\ \frac{d}{dt}p_{\ \theta}=\ \frac{d^{2}}{dt^{2}}q_{\ \theta}$$"]:::zkNode
-        E["4️⃣ Variational Physics Loss: $$\ \mathcal{L}_{phys}=\ \langle(\ddot{q}+\omega^{2}q)^{2}\ \rangle$$"]:::zkNode
-        F["5️⃣ Total Loss: $$\ \mathcal{L}_{tot}=\mathcal{L}_{phys} \ $$ (data loss is optional in a low fidelity PINN)"]:::zkNode
-        G["6️⃣ Optimizer (Adam): $$\ \theta \leftarrow\ \theta-\ \eta\ \nabla_{\ \theta}\ \mathcal{L}_{tot}$$"]:::zkNode
+        B["1️⃣ Collocation Points"]:::stage1
+        C["2️⃣ Neural Ansatz"]:::stage2
+        D["3️⃣ Automatic Differentiation"]:::stage3
+        E["4️⃣ Variational Physics Loss"]:::stage4
+        F["5️⃣ Total Loss"]:::stage5
+        G["6️⃣ Optimizer (Adam)"]:::stage6
 
         B --> C
         C --> D
         D --> E
         E --> F
         F --> G
-        G -- "Training Loop iterates over epochs" --> C
+        G -- training loop --> C
     end
 
     %%--------------------------------------------------------------
-    %%  Ancillary blocks
+    %%  CONTEXT & DIAGNOSTICS
     %%--------------------------------------------------------------
-    readme["0️⃣ Setting the Stage: Define SHO dynamics &amp; Lagrangian"]:::zkNode
-    H["7️⃣ Sanity Check with Plots: training curve, trajectories, phase‑space, $$\ H_{\theta}(t)=H(q_{\theta},p_{\theta})$$"]:::zkNode
+    A["0️⃣ Define SHO Dynamics"]:::stage0
+    H["7️⃣ Diagnostics & Sanity Checks"]:::stage7
 
-    readme --> PIML:::zkRoundedNode
+    A --> PIML:::dashed
     PIML --> H
-
-    %%--------------------------------------------------------------
-    %%  Apply the rounded‑node class to everything (explicit)
-    %%--------------------------------------------------------------
-    %%class PIML zkRoundedNode
-    %%class B C D E F G readme H zkRoundedNode
 ```
+### Pipeline Legend (Mathematical Mapping)
+
+| Step | Component | Mathematical Description                                       | Interpretation                           |
+|----|----|----------------------------------------------------------------|------------------------------------------|
+| 0️⃣ | Problem setup | SHO Lagrangian and equations of motion                         | Define the physical system               |
+| 1️⃣ | Collocation points | $  t \in [0, 2\pi]  $                                          | Synthetic “data” for physics enforcement |
+| 2️⃣ | Neural ansatz | $ q_\theta(t) = \mathrm{MLP}(t,\theta) $                       | Learn a trajectory representation        |
+| 3️⃣ | Automatic differentiation | $ p_\theta = \dot q_\theta,\;\ddot q_\theta$                   | Recover velocity and acceleration        |
+| 4️⃣ | Physics loss | $\mathcal{L}_{phys}=\langle(\ddot q + \omega^2 q)^2\rangle   $ | Encode Euler–Lagrange structure          |
+| 5️⃣ | Total loss | $ \mathcal{L}_{tot} = \mathcal{L}_{phys} $                     | Low-fidelity PINN objective              |
+| 6️⃣ | Optimization | $ \theta \leftarrow \theta - \eta\nabla_\theta \mathcal{L} $   | Gradient-based learning                  |
+| 7️⃣ | Diagnostics | $ H_\theta(t)=H(q_\theta,p_\theta) $                           | Sanity checks & structure validation     |
+
+
 ---
 
 ## 🔰 Implementation Overview
@@ -127,15 +130,26 @@ where $q(t)$ denotes the trajectory of the oscillator's position about an equili
   
 ### Neural ansatz
 
+
   $$ q_\theta(t) = \text{MLP}(t, \theta) $$
 
-<figure>    
-  <img src="./assets/images/mlp.png" alt="Multilayer perceptron architecture." height="300">
-  <figcaption>Multilayer perceptron architecture implementing. $\text{Linear}\rightarrow \text{tanh} \rightarrow \text{Linear} \rightarrow \text{tanh} \rightarrow \text{Linear}$, with two hidden layers of width 64.</figcaption>
-</figure>
+<p align="center">
+  <img src="./assets/images/mlp.png"
+       alt="Multilayer perceptron architecture."
+       height="300">
+</p>
 
+<p align="center">
+  <em>Multilayer perceptron architecture with two hidden layers of width 64.</em>
+</p>
 
+**Architecture:**  
+$\text{Linear} \rightarrow \tanh \rightarrow \text{Linear} \rightarrow \tanh \rightarrow \text{Linear}$
 
+The trajectory $q_\theta(t)$ is represented by a multilayer perceptron (MLP) that maps time $t$ to a scalar output.
+Each linear layer performs an affine change of coordinates, while the interwoven $\tanh$ activations introduce smooth nonlinear distortions.
+The composition of these layers allows the network to approximate curved dynamical trajectories while remaining differentiable, enabling physics-informed (soft) constraints
+to bias the learned dynamics toward Hamiltonian structure.
 ### Variational loss (soft constraint $\Rightarrow$ low fidelity) 
 
 Rather than solving the equations of motion exactly, the **Euler-Lagrange residual** is penalized at collation points in time.
@@ -150,25 +164,25 @@ Which can be simplified to:
 ---
 
 ## Five Machine Learning Stages (Brunton-inspired) 
-### 1. Problem formulation ✔️
+### A. Problem formulation ✔️
     
    > **Research Question:** Can a neural function approximator recover physically meaningful motion via minimization of a **variational residual**, rather than fitting observed data?
    
-### 2. Data collection and curation ✖️
+### B. Data collection and curation ✖️
 - Intentionally minimal (i.e., no observational trajectories).
 - Collocation points in time serve as synthetic "data" to embed physics into training.
     
-### 3. Neural architecture ⚠️
+### C. Neural architecture ⚠️
 - Low-depth MLP, scalar input $\rightarrow$ scalar output, `tanh` activations.
 - No convolutions, recurrence, or unnecessary inductive biases.
 - Physics enters through the **loss function**, not the architecture.
 
-### 4. Loss function ✅
+### D. Loss function ✅
 
 $$\mathcal{L}_{phys} = \Big< (\ddot{q} + \omega^2q)^2\Big>$$
 Encodes Euler-Lagrange structure, second-order dynamics, and physical consistency.
 
-### 5. Optimization Strategy ❎⚠️
+### E. Optimization Strategy ❎⚠️
 -  Standard Adam optimizer with fixed learning rate.
 -  Optimization is intended to **reveal physical structure**, rather than fully customize for performance.
 
@@ -233,10 +247,11 @@ Unlike symplectic integrators, this model does not strictly conserve the Hamilto
 ---
 
 ## 📚 Sources
-- **PINNs Foundational Paper:** Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. *Journal of Computational Physics*, 378, 686-707.
-- **Data-Driven Modeling:** Brunton, S. L., & Kutz, J. N. (2022). *Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control*. Cambridge University Press.
-- **Variational Mechanics:** Goldstein, H., Poole, C., & Safko, J. (2001). *Classical Mechanics*. Pearson.
-- **PINNs Failure Modes:** Basir, S., & Senocak, I. (2022). Critical investigation of failure modes in physics-informed neural networks. AIAA SCITECH 2022 Forum. https://doi.org/10.2514/6.2022-2353
+## Citations
+- Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks*. Journal of Computational Physics. [@raissi2019pinns]
+- Brunton, S. L., & Kutz, J. N. (2022). *Data-Driven Science and Engineering*. Cambridge University Press. [@brunton2022datadriven]
+- Goldstein, H., Poole, C., & Safko, J. (2001). *Classical Mechanics*. Pearson. [@goldstein2001classical]
+- Basir, S., & Senocak, I. (2022). *Critical investigation of failure modes in PINNs*. AIAA SCITECH. [@basir2022pinnfailures]
 
 ---
 
