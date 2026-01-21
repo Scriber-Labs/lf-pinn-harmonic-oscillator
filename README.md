@@ -102,6 +102,8 @@ flowchart TB
 
     A --> PIML:::dashed
     PIML --> H
+    
+    click C "assets/phase_space.png" "View figure"
 ```
 ### Pipeline Legend (Mathematical Mapping)
 
@@ -128,28 +130,28 @@ We model a non-dimensionalized 1-D SHO using the Lagrangian,
 
 where $q(t)$ denotes the trajectory of the oscillator's position about an equilibrium point. 
   
-### Neural ansatz
-
-
-  $$ q_\theta(t) = \text{MLP}(t, \theta) $$
+### Neural ansatz: $ q_\theta(t) = \text{MLP}(t, \theta) $
 
 <p align="center">
   <img src="./assets/images/mlp.png"
        alt="Multilayer perceptron architecture."
-       height="300">
+       height="250">
 </p>
 
 <p align="center">
   <em>Multilayer perceptron architecture with two hidden layers of width 64.</em>
 </p>
 
-**Architecture:**  
-$\text{Linear} \rightarrow \tanh \rightarrow \text{Linear} \rightarrow \tanh \rightarrow \text{Linear}$
+> **Architecture:**  
+> $$\text{Linear} \rightarrow \tanh \rightarrow \text{Linear} \rightarrow \tanh \rightarrow \text{Linear}$$
 
-The trajectory $q_\theta(t)$ is represented by a multilayer perceptron (MLP) that maps time $t$ to a scalar output.
-Each linear layer performs an affine change of coordinates, while the interwoven $\tanh$ activations introduce smooth nonlinear distortions.
-The composition of these layers allows the network to approximate curved dynamical trajectories while remaining differentiable, enabling physics-informed (soft) constraints
+- The  multilayer perceptron (MLP) maps time $t$ to a scalar output $q_\theta(t)$ represented the predicted trajectory of the SHO in 1D space.
+
+- Each linear layer performs an affine change of coordinates, while the interwoven $\tanh$ activations introduce smooth nonlinear distortions.
+
+- The composition of these layers allows the network to approximate curved dynamical trajectories while remaining differentiable, enabling physics-informed (soft) constraints
 to bias the learned dynamics toward Hamiltonian structure.
+
 ### Variational loss (soft constraint $\Rightarrow$ low fidelity) 
 
 Rather than solving the equations of motion exactly, the **Euler-Lagrange residual** is penalized at collation points in time.
