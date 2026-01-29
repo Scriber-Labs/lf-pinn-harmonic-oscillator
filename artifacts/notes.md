@@ -76,10 +76,7 @@ For this repository, **low fidelty** means
 
 ### 🔵 Examples of valid LF constraints:
 - Penalizing the residuals...
-    $$ \begin{align*}
-        \partial_tq - \frac{\partial H}{\partial p},  \quad
-        \partial_tp + \frac{\partial H}{\partial q}
-        \end{align*}    $$
+    $$ \begin{align*} \partial_tq - \frac{\partial H}{\partial p}, \quad \partial_tp + \frac{\partial H}{\partial q} \end{align*} $$
 
 - Penalizing phase-space volume drift.
 
@@ -94,7 +91,9 @@ In Clifford algebra $\omega = \partial_q \wedge \partial_p$ is just a bivector:
 - Hamiltonian flow is a **bivector-generated motion**. 
 
 ### Bivector Operator as a Symplectic Matrix
-The matrix $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
+The matrix 
+    $$ J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix} $$ 
+is the matrix representation of $dq\wedge dp$.
 In Clifford algebra language:
 - $J$ corresponds to multiplication by the phase-space pseudoscalar
 - Poisson brackets are bivector contractions.
