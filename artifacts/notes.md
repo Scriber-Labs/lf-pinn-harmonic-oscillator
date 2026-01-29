@@ -1,5 +1,5 @@
 # LF PINN Harmonic Oscillator Notes - Geometry Notes
-> **Scriber Labs -**  Intuition-first notes connecting Hamiltionian mechanics, symplectic geometry, and low-fidelity PINNs. 
+> **Scriber Labs -**  Intuition-first notes connecting Hamiltonian mechanics, symplectic geometry, and low-fidelity PINNs. 
 
 ## Scope and Goals
 These notes collect the geometric ideas that motivate the **low-fidelity PINN (LF-PINN)** for the 1D simple harmonic oscillator (SHO). 
@@ -18,7 +18,7 @@ and  **bilinear** if it is linear in *each* argument.
 Let $V$ be a vector space over the real numbers, and let $\omega: V\times V \rightarrow \mathbb{R}$ be a bilinear function. 
 The function $\omega$ is said to be **non-degenerate** iff
         
-$$ \{ v \in V | \forall w\in V, \omega(v,w)=0\} = \{ 0 \} .$$
+$$ \{ v \in V | \forall w\in V, \quad \omega(v,w) = \{ 0 \} \}.$$
 
 Equivalently, $\omega$ is a non-degenerate function if and only if the zero vector is the only vector that pairs to zero along with every other vector in $v\in V$.
 
@@ -28,9 +28,9 @@ Equivalently, $\omega$ is a non-degenerate function if and only if the zero vect
 
 ## Symplectic form
 - Casual Definition: A **symplectic form** measures *signed area* in phase space $(\bf{q}, \bf{p})$ 
-- Technical definition: A **symplectic form** is a smooth, closed, non-degenerate, 2-form that fixes the orientation and geometry of phase spce. 
+- Technical definition: A **symplectic form** is a smooth, closed, non-degenerate, 2-form that fixes the orientation and geometry of phase space. 
 
-For a 1D system in phase-space $(q,p)$, the corresponding symplectic form is $$ \omega = dq\wedge dp $$
+For a 1D system in phase-space $(q,p)$, the corresponding symplectic form is $$\omega = dq \wedge dp$$
 
 Properties:
 1. **Closed:** $d\omega = 0$ 
