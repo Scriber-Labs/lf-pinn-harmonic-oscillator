@@ -47,7 +47,7 @@ Properties:
 
 ## Action as Phase-Space Area
 <figure>
-  <img src="assets/images/action_area.png" alt="Action as the area inside the energy contour." width="500">
+  <img src="../assets/images/action_area.png" alt="Action as the area inside the energy contour." width="500">
   <figcaption><em>Figure 1:</em> An arbitrary space energy contour of the harmonic oscillator. </figcaption>
 </figure>
 
