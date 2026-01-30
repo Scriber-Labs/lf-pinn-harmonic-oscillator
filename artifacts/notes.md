@@ -13,7 +13,7 @@ The emphasis is on *structure* (symplectic area, bivectors, and generators of fl
 
 ## Bilinear skew-symmetric map
 A function $\omega : V\times V \rightarrow \mathbb{R}$ is **skew-symmetric** if it is linear in
-    $$ \forall u,v \in V, \quad \omega(u,v)=-\omega(v,u)$$
+    $$\forall u,v \in V, \quad \omega(u,v)=-\omega(v,u)$$
 
 and  **bilinear** if it is linear in *each* argument.
 
