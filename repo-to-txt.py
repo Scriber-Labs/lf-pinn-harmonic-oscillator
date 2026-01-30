@@ -2,14 +2,13 @@
 """
 repo-to-txt.py
 
-Create a clean, LLM-friendly text snapshot of a repository:
-- Directory tree (depth-limited)
-- Source file contents
-- Optional repo intent
+Create a compact, LLM-friendly snapshot of a repository:
+- Depth-limited directory tree
+- Prioritized key files
+- Truncated or header-only source files
+- Config files summarized (not dumped)
 - Notebook summaries instead of raw JSON
-
-Run from repo root:
-    python repo-to-txt.py
+- Global size guard to avoid context blowup
 """
 
 from pathlib import Path
@@ -19,10 +18,21 @@ from pathlib import Path
 # =====================
 
 OUTPUT_FILE = "snapshot.txt"
-MAX_FILE_SIZE = 200_000  # bytes
-TREE_DEPTH = 3
 
-INCLUDE_EXTS = {".md", ".py", ".txt", ".yml", ".yaml", ".json", ".toml"}
+TREE_DEPTH = 2
+
+MAX_LINES_PER_FILE = 150
+MAX_OUTPUT_BYTES = 250_000
+
+CODE_EXTS = {".py", ".md", ".txt"}
+CONFIG_EXTS = {".json", ".yml", ".yaml", ".toml"}
+
+IMPORTANT_FILES = {
+    "README.md",
+    "main.py",
+    "app.py",
+    "__init__.py",
+}
 
 EXCLUDE_DIRS = {
     ".git",
@@ -35,7 +45,6 @@ EXCLUDE_DIRS = {
     "dist",
 }
 
-# Explicitly exclude generated snapshots / prompts
 EXCLUDE_FILES = {
     "snapshot.txt",
     "prompt.txt",
@@ -48,6 +57,8 @@ NOTEBOOK_SUMMARIES = {
     # "notebooks/demo.ipynb": "Notebook demonstrating training loop and visualization."
 }
 
+PY_HEADER_ONLY = True  # extract imports / defs / classes only
+
 # =====================
 # Helpers
 # =====================
@@ -57,12 +68,16 @@ def is_excluded(path: Path) -> bool:
     return any(part in EXCLUDE_DIRS for part in path.parts)
 
 
-def is_text_file(path: Path) -> bool:
-    return (
-        path.is_file()
-        and path.suffix in INCLUDE_EXTS
-        and path.stat().st_size < MAX_FILE_SIZE
-    )
+def iter_files(root: Path, max_depth: int):
+    for path in root.rglob("*"):
+        if is_excluded(path):
+            continue
+        try:
+            rel = path.relative_to(root)
+        except ValueError:
+            continue
+        if len(rel.parts) <= max_depth:
+            yield path
 
 
 def load_repo_intent() -> str:
@@ -74,13 +89,18 @@ def load_repo_intent() -> str:
 
 def print_tree(root: Path, depth: int) -> str:
     lines = []
-    for path in sorted(root.rglob("*")):
-        if is_excluded(path):
-            continue
+    for path in sorted(iter_files(root, depth)):
         rel = path.relative_to(root)
-        if len(rel.parts) <= depth:
-            indent = "  " * (len(rel.parts) - 1)
-            lines.append(f"{indent}{path.name}")
+        indent = "  " * (len(rel.parts) - 1)
+        lines.append(f"{indent}{path.name}")
+    return "\n".join(lines)
+
+
+def extract_py_headers(text: str) -> str:
+    lines = []
+    for line in text.splitlines():
+        if line.startswith(("import ", "from ", "class ", "def ")):
+            lines.append(line)
     return "\n".join(lines)
 
 
@@ -95,21 +115,35 @@ def write_section(out, title: str):
 
 def main():
     repo = Path(".").resolve()
+    written_bytes = 0
+
+    def safe_write(out, text: str) -> bool:
+        nonlocal written_bytes
+        b = len(text.encode("utf-8"))
+        if written_bytes + b > MAX_OUTPUT_BYTES:
+            out.write("\n\n[Snapshot truncated: size limit reached]\n")
+            return False
+        out.write(text)
+        written_bytes += b
+        return True
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as out:
-        out.write("# Repository Snapshot\n\n")
+        safe_write(out, "# Repository Snapshot\n\n")
 
         write_section(out, "Repo Intent (author-provided)")
         intent = load_repo_intent()
-        out.write((intent if intent else "[No repo intent provided]") + "\n\n")
+        safe_write(out, (intent if intent else "[No repo intent provided]") + "\n\n")
 
         write_section(out, "Directory Tree")
-        out.write(print_tree(repo, TREE_DEPTH) + "\n\n")
+        safe_write(out, print_tree(repo, TREE_DEPTH) + "\n\n")
 
         write_section(out, "Files")
 
-        for file in sorted(repo.rglob("*")):
-            if is_excluded(file):
+        files = sorted(iter_files(repo, TREE_DEPTH))
+        files = sorted(files, key=lambda p: p.name not in IMPORTANT_FILES)
+
+        for file in files:
+            if not file.is_file():
                 continue
             if file.name in EXCLUDE_FILES:
                 continue
@@ -119,18 +153,51 @@ def main():
             # Notebook handling
             if file.suffix == ".ipynb":
                 summary = NOTEBOOK_SUMMARIES.get(
-                    str(rel), "Jupyter notebook (content omitted; JSON format)."
+                    str(rel),
+                    "Jupyter notebook (content omitted; JSON format).",
                 )
-                out.write(f"\n\n=== {rel} (summary) ===\n\n{summary}\n")
+                if not safe_write(
+                    out, f"\n\n=== {rel} (summary) ===\n\n{summary}\n"
+                ):
+                    break
                 continue
 
-            # Text files
-            if is_text_file(file):
-                out.write(f"\n\n=== {rel} ===\n\n")
+            # Config files (summarize only)
+            if file.suffix in CONFIG_EXTS:
+                if not safe_write(
+                    out,
+                    f"\n\n=== {rel} (config summary) ===\n\n"
+                    f"{file.suffix} configuration file; content omitted.\n",
+                ):
+                    break
+                continue
+
+            # Code / text files
+            if file.suffix in CODE_EXTS:
+                if not safe_write(out, f"\n\n=== {rel} ===\n\n"):
+                    break
                 try:
-                    out.write(file.read_text(encoding="utf-8"))
+                    text = file.read_text(encoding="utf-8")
                 except UnicodeDecodeError:
-                    out.write("[Skipped: encoding error]")
+                    if not safe_write(out, "[Skipped: encoding error]\n"):
+                        break
+                    continue
+
+                if file.suffix == ".py" and PY_HEADER_ONLY:
+                    headers = extract_py_headers(text)
+                    content = headers if headers else "[No top-level definitions]"
+                else:
+                    lines = text.splitlines()
+                    if len(lines) > MAX_LINES_PER_FILE:
+                        content = (
+                            "\n".join(lines[:MAX_LINES_PER_FILE])
+                            + "\n\n[... truncated ...]"
+                        )
+                    else:
+                        content = text
+
+                if not safe_write(out, content):
+                    break
 
     print(f"Saved snapshot to {OUTPUT_FILE}")
 

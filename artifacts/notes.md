@@ -97,8 +97,9 @@ $$\partial_q \wedge \partial_p = \frac{1}{2}(\partial_q\partial_p - \partial_p \
 
 ### Bivector Operator as a Symplectic Matrix
 The matrix 
-    $$ J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix} $$ 
+    $J = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ 
 is the matrix representation of $dq\wedge dp$.
+
 In Clifford algebra language:
 - $J$ corresponds to multiplication by the phase-space pseudoscalar
 - Poisson brackets are bivector contractions.
@@ -114,7 +115,8 @@ In Clifford algebra language:
 - [ ] Hamiltonian mechanics from geometry (kinetic + potential $\rightarrow$ flow)
 - [ ] Laplacian from Hamiltonian structure
 - [ ] Duals of covectors (contrast with cross vs. wedge products)
-- [ ] Convince myself that $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
+- [ ] Convince myself that 
+  $J = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ is the matrix representation of $dq\wedge dp$.
 - [ ] **Concept check:** Is the phase-space pseudoscalar $I=dq\wedge dp$ a *differential-sized* version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
 - [ ] Bivector contractions and Poisson brackets.
 
