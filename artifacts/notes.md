@@ -1,3 +1,8 @@
+---
+bibliography: references/references.bib
+csl: ieee.csl
+---
+
 # LF PINN Harmonic Oscillator Notes - Geometry Notes
 > **Scriber Labs -**  Intuition-first notes connecting Hamiltonian mechanics, symplectic geometry, and low-fidelity PINNs. 
 
