@@ -107,16 +107,16 @@ flowchart TB
 ```
 ### Pipeline Legend (Mathematical Mapping)
 
-| Step | Component | Mathematical Description                             | Interpretation                           |
-|----|----|------------------------------------------------------|------------------------------------------|
-| 0️⃣ | Problem setup | SHO Lagrangian and equations of motion               | Define the physical system               |
-| 1️⃣ | Collocation points | $ t \in [0, 2\pi]$                                   | Synthetic “data” for physics enforcement |
-| 2️⃣ | Neural ansatz | $q_\theta(t) = \mathrm{MLP}(t,\theta)$               | Learn a trajectory representation        |
-| 3️⃣ | Automatic differentiation | $p_\theta = \dot q_\theta,\;\ddot q_\theta$          | Recover velocity and acceleration        |
+| Step | Component | Mathematical Description                                    | Interpretation                           |
+|----|----|-------------------------------------------------------------|------------------------------------------|
+| 0️⃣ | Problem setup | SHO Lagrangian and equations of motion                      | Define the physical system               |
+| 1️⃣ | Collocation points | $ t \in [0, 2\pi]$                                          | Synthetic “data” for physics enforcement |
+| 2️⃣ | Neural ansatz | $q_\theta(t) = \mathrm{MLP}(t,\theta)$                      | Learn a trajectory representation        |
+| 3️⃣ | Automatic differentiation | $p_\theta = \dot q_\theta,\;\ddot q_\theta$                 | Recover velocity and acceleration        |
 | 4️⃣ | Physics loss | $\mathcal{L}_{phys}=\langle(\ddot q + \omega^2 q)^2\rangle$ | Encode Euler–Lagrange structure          |
-| 5️⃣ | Total loss | $\mathcal{L}_{tot} = \mathcal{L}_{phys}$             | Low-fidelity PINN objective              |
+| 5️⃣ | Total loss | $\mathcal{L}_\text{tot} = \mathcal{L}_\text{phys}$          | Low-fidelity PINN objective              |
 | 6️⃣ | Optimization | $\theta \leftarrow \theta - \eta\nabla_\theta \mathcal{L} $ | Gradient-based learning                  |
-| 7️⃣ | Diagnostics | $H_\theta(t)=H(q_\theta,p_\theta)$                   | Sanity checks & structure validation     |
+| 7️⃣ | Diagnostics | $H_\theta(t)=H(q_\theta,p_\theta)$                          | Sanity checks & structure validation     |
 
 
 ---
