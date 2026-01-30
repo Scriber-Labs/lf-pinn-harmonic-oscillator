@@ -23,7 +23,7 @@ and  **bilinear** if it is linear in *each* argument.
 Let $V$ be a vector space over the real numbers, and let $\omega: V\times V \rightarrow \mathbb{R}$ be a bilinear function. 
 The function $\omega$ is said to be **non-degenerate** iff
         
-$$ \{ v \in V | \forall w\in V, \quad \omega(v,w) =0\} = \{ 0 \}.$$
+$$\{ v \in V | \forall w\in V, \quad \omega(v,w) =0\} = \{ 0 \}.$$
 
 Equivalently, $\omega$ is a non-degenerate function if and only if the zero vector is the only vector that pairs to zero along with every other vector in $v\in V$.
 
