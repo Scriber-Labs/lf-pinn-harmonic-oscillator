@@ -4,11 +4,11 @@ csl: ieee.csl
 ---
 
 # LF PINN Harmonic Oscillator Notes - Geometry Notes
-> **Scriber Labs -**  Intuition-first notes connecting Hamiltonian mechanics, symplectic geometry, and low-fidelity PINNs. 
+> **Scriber Labs -** Intuition-first notes connecting Hamiltonian mechanics, symplectic geometry, and low-fidelity PINNs. 
 
 ## Scope and Goals
-These notes collect the geometric ideas that motivate the **low-fidelity PINN (LF-PINN)** for the 1D simple harmonic oscillator (SHO). 
-The emphasis is on *structure* (symplectic area, bivectors, and generators of flow), not on building an exact symplectic integrator.
+- These notes collect the geometric ideas that motivate the **low-fidelity PINN (LF-PINN)** for the 1D simple harmonic oscillator (SHO). 
+- The emphasis is on *structure* (symplectic area, bivectors, and generators of flow), not on building an exact symplectic integrator.
 ---
 
 ## Bilinear skew-symmetric map
