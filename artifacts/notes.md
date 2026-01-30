@@ -36,7 +36,7 @@ Properties:
 1. **Closed:** $d\omega = 0$ 
 2. **Non-degenerate**
 3. **Smooth** differential form 
-   - [x] Is this the same thing as 'well-behaved' functions in intro quantum mechanics courses?
+   - **Concept check:** Is this the same thing as 'well-behaved' functions in intro quantum mechanics courses?
      - Answer: No, smooth differential $\ne$ well-behaved (square-integrable, continuous)
 4. **Antisymmetric**: $dq\wedge dp = -dp \wedge dq$
 
@@ -56,7 +56,7 @@ By Stokes' theorem, action $J=\oint{pdq}$ is precisely the signed area enclosed 
 ## Symplectic Forms and Harmonic Oscillator PINNs
 
 For the 1D harmonic oscillator PINN, the symplectic form $\omega = dq \wedge dp$ induces Hamilton's equations:
-$$ \dot{q}= \frac{\partial H}{\partial p}, \quad \dot{p}=-\frac{\partial H}{\partial q}$$
+$\dot{q}= \frac{\partial H}{\partial p}, \quad \dot{p}=-\frac{\partial H}{\partial q}$
 
 where 
 
@@ -84,7 +84,7 @@ For this repository, **low fidelty** means
 
 ## Clifford Algebra Detour
 In Clifford algebra $\omega = \partial_q \wedge \partial_p$ is just a bivector:
-    $$ \partial_q \wedge \partial_p = \frac{1}{2}(\partial_q\partial_p - \partial_p\partial_q)$$
+$$\partial_q \wedge \partial_p = \frac{1}{2}(\partial_q\partial_p - \partial_p \partial_q)$$
 
 💎 Interpretation:
 - $\omega$ generates rotations in phase space 
@@ -109,8 +109,8 @@ In Clifford algebra language:
 - [ ] Hamiltonian mechanics from geometry (kinetic + potential $\rightarrow$ flow)
 - [ ] Laplacian from Hamiltonian structure
 - [ ] Duals of covectors (contrast with cross vs. wedge products)
-- [ ] Show that $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
-- [ ] Concept check: Is the phase-space pseudoscalar $I=dq\wedge dp$ a *differential-sized* version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
+- [ ] Convince myself that $$J = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$$ is the matrix representation of $dq\wedge dp$.
+- [ ] **Concept check:** Is the phase-space pseudoscalar $I=dq\wedge dp$ a *differential-sized* version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
 - [ ] Bivector contractions and Poisson brackets.
 
 
