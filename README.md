@@ -3,7 +3,7 @@ A **low-fidelity physics-informed neural network (PINN)** demonstrating how phys
 - Simulates a **1D simple harmonic oscillator (SHO)** with an unknown frequency while softly enforcing the equation of motion and analyzing 
 energy conservation.
 - Prioritizes geometric intuition and visibility of failure modes over benchmark performance.
-- Motivated by the perspective taken by Kutz & Brunton (2022) that parsimony itself is a powerful regularizer in physics informed machine learning (PIML).
+- Motivated by the perspective taken by Kutz & Brunton (2022) that parsimony itself is a powerful regularizer in physics-informed machine learning (PIML).
 
 > 🥅 The purpose of this repo is to serve as a foundational teaching module in PIML design, emphasizing **interpretability** and **parsimony** over raw accuracy.
 
@@ -251,20 +251,12 @@ Unlike symplectic integrators, this model does not strictly conserve the Hamilto
 ---
 
 ## 📚 Sources
-- Basir, S., & Senocak, I. (2022). *Critical Investigation of Failure Modes in Physics-Informed Neural Networks*. AIAA SCITECH 2022 Forum. [https://doi.org/10.2514/6.2022-2353](https://doi.org/10.2514/6.2022-2353)  
-  > Referenced in **Limitations & Observable Failure Modes** (spectral bias, collocation resolution, and constraint interference).
+- Basir, S., & Senocak, I. (2022). *Critical Investigation of Failure Modes in Physics-Informed Neural Networks*. AIAA SCITECH 2022 Forum. [https://doi.org/10.2514/6.2022-2353](https://doi.org/10.2514/6.2022-2353)
+- Brunton, S. L., & Kutz, J. N. (2022). *Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control*, 2nd Edition, Cambridge University Press.
+- Hestenes, D. (1993). *Hamiltonian Mechanics with Geometric Calculus*. In Clifford Algebras and Their Applications in Mathematical Physics, pp. 203–214, Springer. [https://doi.org/10.1007/978-94-011-1719-7_25](https://doi.org/10.1007/978-94-011-1719-7_25)
+- Kutz, J. N., & Brunton, S. L. (2022). *Parsimony as the ultimate regularizer for physics-informed machine learning*. Nonlinear Dynamics, 107(3), 1801–1817. [https://doi.org/10.1007/s11071-021-07118-3](https://doi.org/10.1007/s11071-021-07118-3)
+- Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear PDEs*. Journal of Computational Physics, 378, 686–707. [https://doi.org/10.1016/j.jcp.2018.10.045](https://doi.org/10.1016/j.jcp.2018.10.045)
 
-- Brunton, S. L., & Kutz, J. N. (2022). *Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control*, 2nd Edition, Cambridge University Press.  
-  > Referenced in **Extrapolation (OOD)** and ML stages, e.g., Step 7 diagnostics.
-
-- Hestenes, D. (1993). *Hamiltonian Mechanics with Geometric Calculus*. In Clifford Algebras and Their Applications in Mathematical Physics, pp. 203–214, Springer. [https://doi.org/10.1007/978-94-011-1719-7_25](https://doi.org/10.1007/978-94-011-1719-7_25)  
-  > Relevant to conceptual notes on Hamiltonian structure, symplectic forms, and phase-space rotations.
-
-- Kutz, J. N., & Brunton, S. L. (2022). *Parsimony as the ultimate regularizer for physics-informed machine learning*. Nonlinear Dynamics, 107(3), 1801–1817. [https://doi.org/10.1007/s11071-021-07118-3](https://doi.org/10.1007/s11071-021-07118-3)  
-  > Referenced in **Introduction**, motivating low-fidelity and parsimonious model design.
-
-- Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations*. Journal of Computational Physics, 378, 686–707. [https://doi.org/10.1016/j.jcp.2018.10.045](https://doi.org/10.1016/j.jcp.2018.10.045)  
-  > General reference for PINNs and variational residual loss approach (used throughout model design and physics loss sections).
 ---
 
 ## Conceptual Notes
@@ -272,7 +264,7 @@ Refer to `artifacts/notes.md` for:
 - **Symplectic forms:** $dq \wedge dp$ and Hamiltonian flow
 - **Bilinear/skew-symmetric mappings**
 - **Clifford algebra:** bivectors generating phase-space rotations
-- Interpretation of low-fidelity PINNs: penalizing deviations from physical constraints, not exact enforcement
+- **Interpretation of low-fidelity PINNs:** penalizing deviations from physical constraints, not exact enforcement
 
 
 

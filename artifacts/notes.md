@@ -122,3 +122,6 @@ In Clifford algebra language:
 - The action $S$ is the area inside energy flows in phase space.
 
 ---
+# Relevant Readings
+- Hestenes, D. (1993). *Hamiltonian Mechanics with Geometric Calculus*. In Clifford Algebras and Their Applications in Mathematical Physics, pp. 203–214, Springer. https://doi.org/10.1007/978-94-011-1719-7_25
+> Relevant to conceptual notes on Hamiltonian structure, symplectic forms, and phase-space rotations.
