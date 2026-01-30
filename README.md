@@ -114,7 +114,7 @@ flowchart TB
 | 2️⃣ | Neural ansatz | $q_\theta(t) = \mathrm{MLP}(t,\theta)$                      | Learn a trajectory representation        |
 | 3️⃣ | Automatic differentiation | $p_\theta = \dot q_\theta,\;\ddot q_\theta$                 | Recover velocity and acceleration        |
 | 4️⃣ | Physics loss | $\mathcal{L}_{phys}=\langle(\ddot q + \omega^2 q)^2\rangle$ | Encode Euler–Lagrange structure          |
-| 5️⃣ | Total loss | $\mathcal{L}_\text{tot} = \mathcal{L}_\text{phys}$          | Low-fidelity PINN objective              |
+| 5️⃣ | Total loss | $\mathcal{L}_{tot} = \mathcal{L}_{phys}$          | Low-fidelity PINN objective              |
 | 6️⃣ | Optimization | $\theta \leftarrow \theta - \eta\nabla_\theta \mathcal{L} $ | Gradient-based learning                  |
 | 7️⃣ | Diagnostics | $H_\theta(t)=H(q_\theta,p_\theta)$                          | Sanity checks & structure validation     |
 
@@ -130,7 +130,7 @@ We model a non-dimensionalized 1-D SHO using the Lagrangian,
 
 where $q(t)$ denotes the trajectory of the oscillator's position about an equilibrium point. 
   
-### Neural ansatz: $ q_\theta(t) = \text{MLP}(t, \theta) $
+### Neural ansatz: $q_\theta(t) = \text{MLP}(t, \theta)$
 
 <p align="center">
   <img src="./assets/images/mlp.png"
