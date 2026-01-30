@@ -122,7 +122,3 @@ In Clifford algebra language:
 - The action $S$ is the area inside energy flows in phase space.
 
 ---
-
-# Citations
-- Arnold, *Mathematical Methods of Classical Mechanics* [@arnold1989]
-- Marsden & Ratiu, *Introduction to Mechanics and Symmetry* [@marsden1999]
