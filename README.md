@@ -146,7 +146,7 @@ where $q(t)$ denotes the trajectory of the oscillator's position about an equili
 > **Architecture:**  
 > $$\text{Linear} \rightarrow \tanh \rightarrow \text{Linear} \rightarrow \tanh \rightarrow \text{Linear}$$
 
-- The  multilayer perceptron (MLP) maps time $t$ to a scalar output $q_\theta(t)$ represented the predicted trajectory of the SHO in 1D space.
+- The  multilayer perceptron (MLP) maps time $t$ to a scalar output $q_\theta(t)$ representing the predicted trajectory of the SHO in 1D space.
 
 - Each linear layer performs an affine change of coordinates, while the interwoven $\tanh$ activations introduce smooth nonlinear distortions.
 
