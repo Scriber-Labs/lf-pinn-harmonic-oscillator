@@ -76,7 +76,7 @@ For this repository, **low fidelity** means
 
 ### 🔵 Examples of valid LF constraints:
 - Penalizing the residuals...
-$$\begin{align*} \partial_tq - \frac{\partial H}{\partial p}, \quad \partial_tp + \frac{\partial H}{\partial q} \end{align*} $$
+$\begin{align*} \partial_tq - \frac{\partial H}{\partial p}, \quad \partial_tp + \frac{\partial H}{\partial q} \end{align*}$
 
 - Penalizing phase-space volume drift.
 
@@ -91,8 +91,7 @@ $$\partial_q \wedge \partial_p = \frac{1}{2}(\partial_q\partial_p - \partial_p \
 - Hamiltonian flow is a **bivector-generated motion**. 
 
 ### Bivector Operator as a Symplectic Matrix
-The matrix 
-    $J = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ 
+The matrix $J = [0 \ \ 1 ; -1 \ 0]$ 
 is the matrix representation of $dq\wedge dp$.
 
 In Clifford algebra language:
@@ -111,7 +110,7 @@ In Clifford algebra language:
 - [ ] Laplacian from Hamiltonian structure
 - [ ] Duals of covectors (contrast with cross vs. wedge products)
 - [ ] Convince myself that 
-  $J = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ is the matrix representation of $dq\wedge dp$.
+  $J = [0 \ \ 1 ; -1 \ 0]$  is the matrix representation of $dq\wedge dp$.
 - [ ] **Concept check:** Is the phase-space pseudoscalar $I=dq\wedge dp$ a *differential-sized* version of $\mathbb{e}_1 \wedge \mathbb{e}_2$?
 - [ ] Bivector contractions and Poisson brackets.
 
