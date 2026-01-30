@@ -1,8 +1,3 @@
----
-bibliography: references/references.bib
-csl: ieee.csl
----
-
 # LF PINN Harmonic Oscillator Notes - Geometry Notes
 > **Scriber Labs -** Intuition-first notes connecting Hamiltonian mechanics, symplectic geometry, and low-fidelity PINNs. 
 
@@ -81,7 +76,7 @@ For this repository, **low fidelity** means
 
 ### 🔵 Examples of valid LF constraints:
 - Penalizing the residuals...
-    $$ \begin{align*} \partial_tq - \frac{\partial H}{\partial p}, \quad \partial_tp + \frac{\partial H}{\partial q} \end{align*} $$
+$$\begin{align*} \partial_tq - \frac{\partial H}{\partial p}, \quad \partial_tp + \frac{\partial H}{\partial q} \end{align*} $$
 
 - Penalizing phase-space volume drift.
 
