@@ -17,8 +17,8 @@ lf-pinn-harmonic-oscillator/
 ├── requirements.txt
 ├── pyproject.toml
 ├── assets/
-│   ├── images/
-│   ├── action_area.png   # tikz image depiction of the action as the area of inside energy flows
+│   └── images/
+│       └── action_area.png   # tikz image depiction of the action as the area of inside energy flows
 ├── src/
 │   ├── model.py          # neural network ansatz
 │   ├── physics.py        # SHO + variational loss
