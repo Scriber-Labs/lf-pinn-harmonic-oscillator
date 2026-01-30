@@ -3,8 +3,9 @@ A **low-fidelity physics-informed neural network (PINN)** demonstrating how phys
 - Simulates a **1D simple harmonic oscillator (SHO)** with an unknown frequency while softly enforcing the equation of motion and analyzing 
 energy conservation.
 - Prioritizes geometric intuition and failure-mode visibility over benchmark performance.
+- Motivated by the perspective taken by Kutz & Brunton (2022) that parsimony itself is a powerful regularizer in physics informed machine learning (PIML).
 
-> 🥅 The purpose of this repo is to serve as a foundational teaching module in physics-informed machine learning (PIML), emphasizing **interpretability** and **parsimony** over accuracy or performance.
+> 🥅 The purpose of this repo is to serve as a foundational teaching module in PIML design, emphasizing **interpretability** and **parsimony** over accuracy or performance.
 
 ---
 
@@ -135,7 +136,7 @@ where $q(t)$ denotes the trajectory of the oscillator's position about an equili
 <p align="center">
   <img src="./assets/images/mlp.png"
        alt="Multilayer perceptron architecture."
-       height="250">
+       height="500">
 </p>
 
 <p align="center">
@@ -210,7 +211,8 @@ python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 
 
 ---
 
-## ⚠️ Limitations
+## ⚠️ Limitations & Observable Failure Modes
+This section documents both  theoretical limitations *and* the concrete failure modes that appear during training and evaluation. These behaviors are expected and are intentionally exposed to support interpretablity.
 ### 1. Spectral bias and Collocation Resolution
 Increasing $\omega$ or $T_\text{max}$ too much causes aliasing (conceptually analogous to Nyquist sampling). This behavior is consistent with reported PINN failure modes under undersampling (Basir & Senocak, 2022).
   - Insufficient point density will be unable to resolve the curvature 'resolution' that is required by the governing differential equations.
@@ -250,10 +252,10 @@ Unlike symplectic integrators, this model does not strictly conserve the Hamilto
 
 ## 📚 Sources
 ## Citations
-- Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks*. Journal of Computational Physics. [@raissi2019pinns]
+- Basir, S., & Senocak, I. (2022). *Critical investigation of failure modes in PINNs*. AIAA SCITECH. [@basir2022pinnfailures]
 - Brunton, S. L., & Kutz, J. N. (2022). *Data-Driven Science and Engineering*. Cambridge University Press. [@brunton2022datadriven]
 - Goldstein, H., Poole, C., & Safko, J. (2001). *Classical Mechanics*. Pearson. [@goldstein2001classical]
-- Basir, S., & Senocak, I. (2022). *Critical investigation of failure modes in PINNs*. AIAA SCITECH. [@basir2022pinnfailures]
+- Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks*. Journal of Computational Physics. [@raissi2019pinns]
 
 ---
 
