@@ -35,10 +35,6 @@ lf-pinn-harmonic-oscillator/
         ├── energy.png                  # Hamiltonian evolution
         ├── phase_space_flow.png        # phase space with learned Hamiltonian flow
         └── phase_space_quiver.png      # phase space with learned Hamiltonian vector field
-    
-    
-    
-
 ```
 ## Model Design
 
@@ -153,7 +149,7 @@ where $q(t)$ denotes the trajectory of the oscillator's position about an equili
 - The composition of these layers allows the network to approximate curved dynamical trajectories while remaining differentiable, enabling physics-informed (soft) constraints
 to bias the learned dynamics toward Hamiltonian structure.
 
-### Variational loss (soft constraint $\Rightarrow$ low fidelity) 
+### Variationally motivated loss (soft constraint $\Rightarrow$ low fidelity) 
 
 Rather than solving the equations of motion exactly, the **Euler-Lagrange residual** is penalized at collocation points in time.
 
@@ -163,7 +159,7 @@ Which can be simplified to:
 
   $$ \mathcal{L}_{phys} = \big<(\ddot{q} + \omega^2 q)^2 \big> $$
 
-> This encourages the network to respect physical dynamics. Note that the physical dynamics we want the model to respect are not directly enforced - hence "low-fidelity".
+> This encourages the network to respect physical dynamics. Note that the physical dynamics we want the model to respect are not directly enforced - hence "low-fidelity". Specifically, the residual of the stationary condition of the action is being minimized rather than the action itself.
 ---
 
 ## Five Machine Learning Stages (Brunton-inspired) 
@@ -212,9 +208,10 @@ python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 
 ---
 
 ## ⚠️ Limitations & Observable Failure Modes
-This section documents both  theoretical limitations *and* the concrete failure modes that appear during training and evaluation. These behaviors are expected and are intentionally exposed to support interpretability.
+This section documents both theoretical limitations *and* the concrete failure modes that appear during training and evaluation. These behaviors are expected and are intentionally exposed to support interpretability.
+
 ### 1. Spectral bias and Collocation Resolution
-Increasing $\omega$ or $T_\text{max}$ too much causes aliasing (conceptually analogous to Nyquist sampling). This behavior is consistent with reported PINN failure modes under undersampling (Basir & Senocak, 2022).
+Increasing $\omega$ or $T_\text{max}$ too much causes aliasing (conceptually analogous to Nyquist sampling). This behavior is consistent with reported PINN failure modes due to undersampling (Basir & Senocak, 2022).
   - Insufficient point density will be unable to resolve the curvature 'resolution' that is required by the governing differential equations.
   - Neural networks naturally learn lower-frequency components first. High-frequency oscillators may require specialized architectures or adaptive sampling.
 
@@ -224,7 +221,7 @@ Increasing $\omega$ or $T_\text{max}$ too much causes aliasing (conceptually ana
 ### 2. **Constraint Interference**
 Increasing $T_\text{max}$ increases non-convexity, introduces more competing constraints, and creates saddle points and narrow/unstable basins of attraction.
 - This manifests as gradually increasing "spike-amplitudes" in the training curve and reflects the optimizer being repeatedly redirected by global physics constraints (see Figure 1 in `artifacts/figures.md`).
-- Ultimately prevents the model converging to a stable basin.
+- Ultimately prevents the model from converging to a stable basin.
     
 ### 3. **Soft Constraints** 
 Unlike symplectic integrators, this model does not strictly conserve the Hamiltonian, 
