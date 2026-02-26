@@ -19,7 +19,7 @@ def set_global_seed(seed: int, *, deterministic: bool = False) -> None:
     np.random.seed(seed)
     torch.manual_seed(seed)
     if torch.cuda.is_available():
-        torch.cuda.maniual_seed_all(seed)
+        torch.cuda.manual_seed_all(seed)
 
     torch.backends.cudnn.deterministic = deterministic
     torch.backends.cudnn.benchmark = not deterministic

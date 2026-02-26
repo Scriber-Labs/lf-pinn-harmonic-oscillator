@@ -207,7 +207,7 @@ python -m train --hidden 128 --epochs 5000 --n-points 200 --omega 1.0 --seed 42 
 
 ---
 
-## ⚠️ Limitations & Observable Failure Modes
+## 🚧 Limitations & Observable Failure Modes
 This section documents both theoretical limitations *and* the concrete failure modes that appear during training and evaluation. These behaviors are expected and are intentionally exposed to support interpretability.
 
 ### 1. Spectral bias and Collocation Resolution
@@ -215,8 +215,17 @@ Increasing $\omega$ or $T_\text{max}$ too much causes aliasing (conceptually ana
   - Insufficient point density will be unable to resolve the curvature 'resolution' that is required by the governing differential equations.
   - Neural networks naturally learn lower-frequency components first. High-frequency oscillators may require specialized architectures or adaptive sampling.
 
-📝 **Note:** A low-resolution collocation density breaks conservation even if optimization converges.
-> 🏡 In practice, collocation density should scale with both the simulation window and the highest frequency content expected in the solution.
+🔑 **Key Take-Aways:** 
+- A low-resolution collocation density breaks conservation even if optimization converges.
+- Physics residual minimization does not guarantee physical invariants unless sampling resolves the solution spectrum. This is a manifestation of **spectral bias**.
+- Residual minimization approximates operator constraints, but conservation emerges from the generators structure. If the generator isn't structurally preserved (via sampling or architecture), invariants drift even under converged optimization.
+  - This connects spectral bias in neural nets to...
+    - Nyquist sampling theory
+    - Hamiltonian structure
+    - Conservation laws
+    - PINN failure modes
+    
+> 🏡 **Take-Home Message:** In practice, collocation density should scale with both the simulation window and the highest frequency content expected in the solution.
 
 ### 2. **Constraint Interference**
 Increasing $T_\text{max}$ increases non-convexity, introduces more competing constraints, and creates saddle points and narrow/unstable basins of attraction.
