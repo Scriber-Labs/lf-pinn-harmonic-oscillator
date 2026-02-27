@@ -104,16 +104,16 @@ flowchart TB
 ```
 ### Pipeline Legend (Mathematical Mapping)
 
-| Step | Component | Mathematical Description                                 | Interpretation                           |
-|----|----|----------------------------------------------------------|------------------------------------------|
-| 0️⃣ | Problem setup | SHO Lagrangian and equations of motion                   | Define the physical system               |
-| 1️⃣ | Collocation points | $t \in [0, 2\pi]$                                        | Synthetic “data” for physics enforcement |
-| 2️⃣ | Neural ansatz | $q_\theta(t) = \mathrm{MLP}(t,\theta)$                   | Learn a trajectory representation        |
-| 3️⃣ | Automatic differentiation | $p_\theta = \dot q_\theta,\;\ddot q_\theta$              | Recover velocity and acceleration        |
-| 4️⃣ | Physics loss | $\mathcal{L}_{phys}=\langle(\ddot q + \omega^2 q)^2\rangle$ | Encode Euler–Lagrange structure          |
-| 5️⃣ | Total loss | $\mathcal{L}_{tot}=\mathcal{L}_{phys}$          | Low-fidelity PINN objective              |
-| 6️⃣ | Optimization | $\theta \leftarrow \theta - \eta\nabla_\theta \mathcal{L}$ | Gradient-based learning                  |
-| 7️⃣ | Diagnostics | $H_\theta(t)=H(q_\theta,p_\theta)$                       | Sanity checks & structure validation     |
+| Step | Component | Mathematical Description                                 | Interpretation                           | Importance in Pipeline |
+|----|----|----------------------------------------------------------|------------------------------------------|------------------------------------------|
+| 0️⃣ | **Problem setup** | SHO Lagrangian and equations of motion                   | Define the physical system               | Provides the exact DE the network must respect. | 
+| 1️⃣ | **Collocation points **| $t \in [0, 2\pi]$                                        | Synthetic “data” for physics enforcement | Keeps the pipeline completely physics-driven. |
+| 2️⃣ | **Neural ansatz** | $q_\theta(t) = \mathrm{MLP}(t,\theta)$                   | Learn a trajectory representation        | Allows automatic differentiation of HOTs. |
+| 3️⃣ | **Automatic differentiation** | $p_\theta = \dot q_\theta,\;\ddot q_\theta$              | Recover velocity and acceleration        | Provides the quantities needed for the physics residual. |
+| 4️⃣ | **Physics loss** | $\mathcal{L}_{phys}=\langle(\ddot q + \omega^2 q)^2\rangle$ | Encode Euler–Lagrange structure          | "Low-fidelity": the network need only reduce the residual, not satisfy it exactly. |
+| 5️⃣ | **Total loss** | $\mathcal{L}_{tot}=\mathcal{L}_{phys}$          | Low-fidelity PINN objective              | Highlights how pure physics can drive learning. |
+| 6️⃣ | **Optimization** | $\theta \leftarrow \theta - \eta\nabla_\theta \mathcal{L}$ | Gradient-based learning                  | Standard gradient descent; the dynamics of convergence reveal interpratiblity cues. |
+| 7️⃣ | **Diagnostics** | $H_\theta(t)=H(q_\theta,p_\theta)$                       | Sanity checks & structure validation     | Makes failure modes explicit for analysis. |
 
 
 ---
