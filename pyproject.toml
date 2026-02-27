@@ -10,7 +10,7 @@ name = "lf-pinn-harmonic-oscillator"
 version = "0.1.0"
 description = "Low-fidelity PINN for the simple harmonic oscillator"
 authors = [
-  { name = "YOUR NAME", email = "you@example.com" }
+  { name = "Eigenscribe", email = "eigenscribe@protonmail.com" }
 ]
 readme = "README.md"
 license = { text = "MIT" }
